@@ -27,7 +27,7 @@ if (${KERMA_CI_BUILD})
     message("[+] Skipping DeviceRT in TRAVIS build")
 else()
     add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/libKermaDeviceRT.bc"
-        COMMAND $ENV{LLVM_HOME}/bin/clang++ -S -x cuda --cuda-device-only -emit-llvm --cuda-gpu-arch=${KERMA_CUDA_ARCH} -o libKermaDeviceRT.bc -std=c++11 "${CMAKE_CURRENT_SOURCE_DIR}/DeviceRT.cpp"
+        COMMAND clang++ -S -x cuda --cuda-device-only -emit-llvm --cuda-path=/usr/local/cuda-11.8/ --cuda-gpu-arch=${KERMA_CUDA_ARCH} -o libKermaDeviceRT.bc -std=c++11 "${CMAKE_CURRENT_SOURCE_DIR}/DeviceRT.cpp"
         WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
         DEPENDS DeviceRT.cpp
         VERBATIM

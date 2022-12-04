@@ -25,3 +25,4 @@ cmake-build-debug/
 
 include/kerma/Support/Config.h
 include/kerma/Support/Version.h
+llvm-install
