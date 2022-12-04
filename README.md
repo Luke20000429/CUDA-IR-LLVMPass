@@ -3,8 +3,8 @@
 # KERnel Memory Accesses
 
 ## Dependencies
-#### Ubuntu 18.04 LTS
-Only tested in 18.04. In principle it should work on higher versions too, but no guarantees
+#### Ubuntu 18.04/22.04 LTS
+Only tested in 18.04/22.04. In principle it should work on higher versions too, but no guarantees
 
 #### LLVM 10
 Currently the build system does not automatically pull the LLVM dependencies so we need to manually install them
