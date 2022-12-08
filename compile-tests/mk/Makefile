@@ -2,7 +2,7 @@ SM   = sm_61
 CP   = compute_61
 SRC  = input.cu
 EXE  = input
-DEBUG = -g 
+DEBUG = 
 OPTS = -O2 -std=c++11
 CFLAGS =
 LLVM_HOME = /home/liuxs/workspace/kerma/llvm-install

@@ -1,7 +1,7 @@
-#include <cuda.h>
-#include "test_include.cuh"
+#include<cuda.h>
+#include"test_include.cuh"
 
-#include <iostream>
+#include<iostream>
 
 __device__ void devicefun() {
 
