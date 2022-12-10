@@ -1,0 +1,1489 @@
+2,3c2,3
+< 	.file	"axpy_opt.cu"
+< 	.file	0 "/home/liuxs/workspace/CUDA-IR-LLVMPass" "axpy_opt.cu" md5 0x068bd22e19281f0859d4d0e2f3f2b2f1
+---
+> 	.file	"axpy_uvm.cu"
+> 	.file	0 "/home/liuxs/workspace/CUDA-IR-LLVMPass" "axpy_uvm.cu" md5 0x594a0d22639f1f0412c0e681c547e570
+54,55c54,55
+< 	.file	46 "axpy_opt.cu"
+< 	.loc	46 16 0                         # axpy_opt.cu:16:0
+---
+> 	.file	46 "axpy_uvm.cu"
+> 	.loc	46 16 0                         # axpy_uvm.cu:16:0
+72c72
+< 	.loc	46 16 64 prologue_end           # axpy_opt.cu:16:64
+---
+> 	.loc	46 16 64 prologue_end           # axpy_uvm.cu:16:64
+81c81
+< 	.loc	46 0 64 is_stmt 0               # axpy_opt.cu:0:64
+---
+> 	.loc	46 0 64 is_stmt 0               # axpy_uvm.cu:0:64
+87c87
+< 	.loc	46 16 64                        # axpy_opt.cu:16:64
+---
+> 	.loc	46 16 64                        # axpy_uvm.cu:16:64
+101c101
+< 	.loc	46 18 1 is_stmt 1               # axpy_opt.cu:18:1
+---
+> 	.loc	46 18 1 is_stmt 1               # axpy_uvm.cu:18:1
+124c124
+< 	.loc	46 20 0                         # axpy_opt.cu:20:0
+---
+> 	.loc	46 20 0                         # axpy_uvm.cu:20:0
+156c156
+< 	.loc	46 29 83                        # axpy_opt.cu:29:83
+---
+> 	.loc	46 29 83                        # axpy_uvm.cu:29:83
+159c159
+< 	.loc	46 29 79 is_stmt 0              # axpy_opt.cu:29:79
+---
+> 	.loc	46 29 79 is_stmt 0              # axpy_uvm.cu:29:79
+168,169c168,169
+< 	#DEBUG_VALUE: main:y <- [DW_OP_constu 24, DW_OP_minus, DW_OP_deref] $rbp
+< 	#DEBUG_VALUE: cudaMallocManaged<float>:devPtr <- [DW_OP_constu 24, DW_OP_minus, DW_OP_stack_value] $rbp
+---
+> 	#DEBUG_VALUE: main:y <- [DW_OP_constu 16, DW_OP_minus, DW_OP_deref] $rbp
+> 	#DEBUG_VALUE: cudaMallocManaged<float>:devPtr <- [DW_OP_constu 16, DW_OP_minus, DW_OP_stack_value] $rbp
+172,173c172,173
+< 	.loc	46 0 79                         # axpy_opt.cu:0:79
+< 	leaq	-24(%rbp), %rdi
+---
+> 	.loc	46 0 79                         # axpy_uvm.cu:0:79
+> 	leaq	-16(%rbp), %rdi
+181c181
+< 	.loc	46 30 83                        # axpy_opt.cu:30:83
+---
+> 	.loc	46 30 83                        # axpy_uvm.cu:30:83
+184c184
+< 	.loc	46 30 79 is_stmt 0              # axpy_opt.cu:30:79
+---
+> 	.loc	46 30 79 is_stmt 0              # axpy_uvm.cu:30:79
+193,194c193,194
+< 	#DEBUG_VALUE: main:y <- [DW_OP_constu 24, DW_OP_minus, DW_OP_deref] $rbp
+< 	.loc	46 0 79                         # axpy_opt.cu:0:79
+---
+> 	#DEBUG_VALUE: main:y <- [DW_OP_constu 16, DW_OP_minus, DW_OP_deref] $rbp
+> 	.loc	46 0 79                         # axpy_uvm.cu:0:79
+200c200
+< 	.loc	46 32 10 is_stmt 1              # axpy_opt.cu:32:10
+---
+> 	.loc	46 32 10 is_stmt 1              # axpy_uvm.cu:32:10
+202a203
+> 	movabsq	$4294967297, %rdi               # imm = 0x100000001
+214,252c215
+< 	#DEBUG_VALUE: main:device <- -1
+< 	.loc	46 35 7                         # axpy_opt.cu:35:7
+< 	movl	$-1, -12(%rbp)
+< .Ltmp18:
+< 	#DEBUG_VALUE: main:device <- [DW_OP_constu 12, DW_OP_minus, DW_OP_deref] $rbp
+< 	.loc	46 0 7 is_stmt 0                # axpy_opt.cu:0:7
+< 	leaq	-12(%rbp), %rdi
+< 	.loc	46 36 3 is_stmt 1               # axpy_opt.cu:36:3
+< 	callq	cudaGetDevice
+< .Ltmp19:
+< 	.loc	46 37 24                        # axpy_opt.cu:37:24
+< 	movq	-32(%rbp), %rdi
+< .Ltmp20:
+< 	#DEBUG_VALUE: main:x <- undef
+< 	.loc	46 37 53 is_stmt 0              # axpy_opt.cu:37:53
+< 	movl	-12(%rbp), %edx
+< .Ltmp21:
+< 	#DEBUG_VALUE: main:device <- $edx
+< 	.loc	46 37 3                         # axpy_opt.cu:37:3
+< 	movl	$16, %esi
+< 	xorl	%ecx, %ecx
+< 	callq	cudaMemPrefetchAsync
+< .Ltmp22:
+< 	.loc	46 38 24 is_stmt 1              # axpy_opt.cu:38:24
+< 	movq	-24(%rbp), %rdi
+< .Ltmp23:
+< 	#DEBUG_VALUE: main:y <- undef
+< 	.loc	46 38 53 is_stmt 0              # axpy_opt.cu:38:53
+< 	movl	-12(%rbp), %edx
+< .Ltmp24:
+< 	#DEBUG_VALUE: main:device <- $edx
+< 	.loc	46 38 3                         # axpy_opt.cu:38:3
+< 	movl	$16, %esi
+< 	xorl	%ecx, %ecx
+< 	callq	cudaMemPrefetchAsync
+< .Ltmp25:
+< 	.loc	46 0 3                          # axpy_opt.cu:0:3
+< 	movabsq	$4294967297, %rdi               # imm = 0x100000001
+< 	.loc	46 41 7 is_stmt 1               # axpy_opt.cu:41:7
+---
+> 	.loc	46 36 7                         # axpy_uvm.cu:36:7
+259c222
+< .Ltmp26:
+---
+> .Ltmp18:
+261c224
+< 	.loc	46 41 3 is_stmt 0               # axpy_opt.cu:41:3
+---
+> 	.loc	46 36 3 is_stmt 0               # axpy_uvm.cu:36:3
+263c226
+< .Ltmp27:
+---
+> .Ltmp19:
+269c232,233
+< 	.loc	46 41 28                        # axpy_opt.cu:41:28
+---
+> 	#DEBUG_VALUE: main:y <- [DW_OP_constu 16, DW_OP_minus, DW_OP_deref] $rbp
+> 	.loc	46 36 28                        # axpy_uvm.cu:36:28
+271c235
+< .Ltmp28:
+---
+> .Ltmp20:
+273,275c237,239
+< 	.loc	46 41 31                        # axpy_opt.cu:41:31
+< 	movq	-24(%rbp), %rcx
+< .Ltmp29:
+---
+> 	.loc	46 36 31                        # axpy_uvm.cu:36:31
+> 	movq	-16(%rbp), %rcx
+> .Ltmp21:
+278,279c242,243
+< 	.loc	46 0 31                         # axpy_opt.cu:0:31
+< 	movl	$1073741824, -36(%rbp)          # imm = 0x40000000
+---
+> 	.loc	46 0 31                         # axpy_uvm.cu:0:31
+> 	movl	$1073741824, -20(%rbp)          # imm = 0x40000000
+281,282c245,246
+< 	movq	%rax, -104(%rbp)
+< .Ltmp30:
+---
+> 	movq	%rax, -96(%rbp)
+> .Ltmp22:
+284,287c248,251
+< 	movq	%rcx, -96(%rbp)
+< 	leaq	-36(%rbp), %rax
+< .Ltmp31:
+< 	.loc	46 16 64 is_stmt 1              # axpy_opt.cu:16:64
+---
+> 	movq	%rcx, -88(%rbp)
+> 	leaq	-20(%rbp), %rax
+> .Ltmp23:
+> 	.loc	46 16 64 is_stmt 1              # axpy_uvm.cu:16:64
+289,290d252
+< 	leaq	-104(%rbp), %rax
+< 	movq	%rax, -120(%rbp)
+291a254,255
+> 	movq	%rax, -120(%rbp)
+> 	leaq	-88(%rbp), %rax
+293,297c257,261
+< 	leaq	-88(%rbp), %rdi
+< 	leaq	-72(%rbp), %rsi
+< 	leaq	-56(%rbp), %rdx
+< 	leaq	-48(%rbp), %rcx
+< .Ltmp32:
+---
+> 	leaq	-80(%rbp), %rdi
+> 	leaq	-64(%rbp), %rsi
+> 	leaq	-48(%rbp), %rdx
+> 	leaq	-40(%rbp), %rcx
+> .Ltmp24:
+299,303c263,267
+< .Ltmp33:
+< 	movq	-88(%rbp), %rsi
+< 	movl	-80(%rbp), %edx
+< 	movq	-72(%rbp), %rcx
+< 	movl	-64(%rbp), %r8d
+---
+> .Ltmp25:
+> 	movq	-80(%rbp), %rsi
+> 	movl	-72(%rbp), %edx
+> 	movq	-64(%rbp), %rcx
+> 	movl	-56(%rbp), %r8d
+305a270
+> 	pushq	-40(%rbp)
+307d271
+< 	pushq	-56(%rbp)
+309c273
+< .Ltmp34:
+---
+> .Ltmp26:
+311,312c275,276
+< .Ltmp35:
+< .LBB1_6:                                # %do.body21
+---
+> .Ltmp27:
+> .LBB1_6:                                # %do.body18
+317c281
+< 	.loc	46 44 26                        # axpy_opt.cu:44:26
+---
+> 	.loc	46 39 26                        # axpy_uvm.cu:39:26
+319c283
+< .Ltmp36:
+---
+> .Ltmp28:
+321c285
+< 	.loc	46 44 59 is_stmt 0              # axpy_opt.cu:44:59
+---
+> 	.loc	46 39 59 is_stmt 0              # axpy_uvm.cu:39:59
+323,324c287,288
+< .Ltmp37:
+< 	.loc	46 44 55                        # axpy_opt.cu:44:55
+---
+> .Ltmp29:
+> 	.loc	46 39 55                        # axpy_uvm.cu:39:55
+326,327c290,291
+< .Ltmp38:
+< # %bb.7:                                # %for.body35.preheader
+---
+> .Ltmp30:
+> # %bb.7:                                # %for.body32.preheader
+347,348c311,312
+< .Ltmp39:
+< 	.loc	46 48 23                        # axpy_opt.cu:48:23
+---
+> .Ltmp31:
+> 	.loc	46 43 23                        # axpy_uvm.cu:43:23
+352c316
+< .Ltmp40:
+---
+> .Ltmp32:
+354c318
+< .Ltmp41:
+---
+> .Ltmp33:
+366,369c330,333
+< .Ltmp42:
+< 	.loc	46 48 41                        # axpy_opt.cu:48:41
+< 	movq	-24(%rbp), %rax
+< .Ltmp43:
+---
+> .Ltmp34:
+> 	.loc	46 43 41                        # axpy_uvm.cu:43:41
+> 	movq	-16(%rbp), %rax
+> .Ltmp35:
+372c336
+< .Ltmp44:
+---
+> .Ltmp36:
+376c340
+< .Ltmp45:
+---
+> .Ltmp37:
+380c344
+< .Ltmp46:
+---
+> .Ltmp38:
+391c355
+< .Ltmp47:
+---
+> .Ltmp39:
+399,400c363,364
+< .Ltmp48:
+< 	.loc	46 48 23 is_stmt 1              # axpy_opt.cu:48:23
+---
+> .Ltmp40:
+> 	.loc	46 43 23 is_stmt 1              # axpy_uvm.cu:43:23
+404c368
+< .Ltmp49:
+---
+> .Ltmp41:
+406c370
+< .Ltmp50:
+---
+> .Ltmp42:
+414,417c378,381
+< .Ltmp51:
+< 	.loc	46 48 41                        # axpy_opt.cu:48:41
+< 	movq	-24(%rbp), %rax
+< .Ltmp52:
+---
+> .Ltmp43:
+> 	.loc	46 43 41                        # axpy_uvm.cu:43:41
+> 	movq	-16(%rbp), %rax
+> .Ltmp44:
+420c384
+< .Ltmp53:
+---
+> .Ltmp45:
+424c388
+< .Ltmp54:
+---
+> .Ltmp46:
+428c392
+< .Ltmp55:
+---
+> .Ltmp47:
+435c399
+< .Ltmp56:
+---
+> .Ltmp48:
+443,444c407,408
+< .Ltmp57:
+< 	.loc	46 48 23 is_stmt 1              # axpy_opt.cu:48:23
+---
+> .Ltmp49:
+> 	.loc	46 43 23 is_stmt 1              # axpy_uvm.cu:43:23
+448c412
+< .Ltmp58:
+---
+> .Ltmp50:
+450c414
+< .Ltmp59:
+---
+> .Ltmp51:
+458,461c422,425
+< .Ltmp60:
+< 	.loc	46 48 41                        # axpy_opt.cu:48:41
+< 	movq	-24(%rbp), %rax
+< .Ltmp61:
+---
+> .Ltmp52:
+> 	.loc	46 43 41                        # axpy_uvm.cu:43:41
+> 	movq	-16(%rbp), %rax
+> .Ltmp53:
+464c428
+< .Ltmp62:
+---
+> .Ltmp54:
+468c432
+< .Ltmp63:
+---
+> .Ltmp55:
+472c436
+< .Ltmp64:
+---
+> .Ltmp56:
+479c443
+< .Ltmp65:
+---
+> .Ltmp57:
+487,488c451,452
+< .Ltmp66:
+< 	.loc	46 48 23 is_stmt 1              # axpy_opt.cu:48:23
+---
+> .Ltmp58:
+> 	.loc	46 43 23 is_stmt 1              # axpy_uvm.cu:43:23
+492c456
+< .Ltmp67:
+---
+> .Ltmp59:
+494c458
+< .Ltmp68:
+---
+> .Ltmp60:
+502,505c466,469
+< .Ltmp69:
+< 	.loc	46 48 41                        # axpy_opt.cu:48:41
+< 	movq	-24(%rbp), %rax
+< .Ltmp70:
+---
+> .Ltmp61:
+> 	.loc	46 43 41                        # axpy_uvm.cu:43:41
+> 	movq	-16(%rbp), %rax
+> .Ltmp62:
+508c472
+< .Ltmp71:
+---
+> .Ltmp63:
+512c476
+< .Ltmp72:
+---
+> .Ltmp64:
+516c480
+< .Ltmp73:
+---
+> .Ltmp65:
+523c487
+< .Ltmp74:
+---
+> .Ltmp66:
+525c489
+< 	.loc	46 51 26                        # axpy_opt.cu:51:26
+---
+> 	.loc	46 46 26                        # axpy_uvm.cu:46:26
+527c491
+< .Ltmp75:
+---
+> .Ltmp67:
+529c493
+< 	.loc	46 51 53 is_stmt 0              # axpy_opt.cu:51:53
+---
+> 	.loc	46 46 53 is_stmt 0              # axpy_uvm.cu:46:53
+531,532c495,496
+< .Ltmp76:
+< 	.loc	46 51 49                        # axpy_opt.cu:51:49
+---
+> .Ltmp68:
+> 	.loc	46 46 49                        # axpy_uvm.cu:46:49
+534,535c498,499
+< .Ltmp77:
+< # %bb.9:                                # %if.end53
+---
+> .Ltmp69:
+> # %bb.9:                                # %if.end50
+540c504
+< 	.loc	46 52 3 is_stmt 1               # axpy_opt.cu:52:3
+---
+> 	.loc	46 47 3 is_stmt 1               # axpy_uvm.cu:47:3
+547c511
+< .Ltmp78:
+---
+> .Ltmp70:
+556c520
+< 	.loc	46 29 156                       # axpy_opt.cu:29:156
+---
+> 	.loc	46 29 156                       # axpy_uvm.cu:29:156
+559,560c523,524
+< .Ltmp79:
+< 	.loc	46 29 101 is_stmt 0             # axpy_opt.cu:29:101
+---
+> .Ltmp71:
+> 	.loc	46 29 101 is_stmt 0             # axpy_uvm.cu:29:101
+565c529
+< .Ltmp80:
+---
+> .Ltmp72:
+572c536
+< 	#DEBUG_VALUE: main:y <- [DW_OP_constu 24, DW_OP_minus, DW_OP_deref] $rbp
+---
+> 	#DEBUG_VALUE: main:y <- [DW_OP_constu 16, DW_OP_minus, DW_OP_deref] $rbp
+574c538
+< 	.loc	46 30 156 is_stmt 1             # axpy_opt.cu:30:156
+---
+> 	.loc	46 30 156 is_stmt 1             # axpy_uvm.cu:30:156
+577,578c541,542
+< .Ltmp81:
+< 	.loc	46 30 101 is_stmt 0             # axpy_opt.cu:30:101
+---
+> .Ltmp73:
+> 	.loc	46 30 101 is_stmt 0             # axpy_uvm.cu:30:101
+583,584c547,548
+< .Ltmp82:
+< .LBB1_11:                               # %if.then25
+---
+> .Ltmp74:
+> .LBB1_11:                               # %if.then22
+590c554
+< 	.loc	46 44 132 is_stmt 1             # axpy_opt.cu:44:132
+---
+> 	.loc	46 39 132 is_stmt 1             # axpy_uvm.cu:39:132
+593,594c557,558
+< .Ltmp83:
+< 	.loc	46 44 77 is_stmt 0              # axpy_opt.cu:44:77
+---
+> .Ltmp75:
+> 	.loc	46 39 77 is_stmt 0              # axpy_uvm.cu:39:77
+597c561
+< 	movl	$44, %edx
+---
+> 	movl	$39, %edx
+599,600c563,564
+< .Ltmp84:
+< .LBB1_8:                                # %if.then50
+---
+> .Ltmp76:
+> .LBB1_8:                                # %if.then47
+606c570
+< 	.loc	46 51 126 is_stmt 1             # axpy_opt.cu:51:126
+---
+> 	.loc	46 46 126 is_stmt 1             # axpy_uvm.cu:46:126
+609,610c573,574
+< .Ltmp85:
+< 	.loc	46 51 71 is_stmt 0              # axpy_opt.cu:51:71
+---
+> .Ltmp77:
+> 	.loc	46 46 71 is_stmt 0              # axpy_uvm.cu:46:71
+613,614c577,578
+< 	movl	$51, %edx
+< .Ltmp86:
+---
+> 	movl	$46, %edx
+> .Ltmp78:
+620c584
+< 	.loc	46 0 0                          # axpy_opt.cu:0:0
+---
+> 	.loc	46 0 0                          # axpy_uvm.cu:0:0
+624c588
+< .Ltmp87:
+---
+> .Ltmp79:
+627c591
+< .Ltmp88:
+---
+> .Ltmp80:
+635,637c599,601
+< 	.p2align	4, 0x90                         # -- Begin function _GLOBAL__sub_I_axpy_opt.cu
+< 	.type	_GLOBAL__sub_I_axpy_opt.cu,@function
+< _GLOBAL__sub_I_axpy_opt.cu:             # @_GLOBAL__sub_I_axpy_opt.cu
+---
+> 	.p2align	4, 0x90                         # -- Begin function _GLOBAL__sub_I_axpy_uvm.cu
+> 	.type	_GLOBAL__sub_I_axpy_uvm.cu,@function
+> _GLOBAL__sub_I_axpy_uvm.cu:             # @_GLOBAL__sub_I_axpy_uvm.cu
+639c603
+< 	.loc	46 0 0 is_stmt 1                # axpy_opt.cu:0:0
+---
+> 	.loc	46 0 0 is_stmt 1                # axpy_uvm.cu:0:0
+647c611
+< .Ltmp89:
+---
+> .Ltmp81:
+651,652c615,616
+< .Ltmp90:
+< 	.loc	46 0 0 is_stmt 0                # axpy_opt.cu:0:0
+---
+> .Ltmp82:
+> 	.loc	46 0 0 is_stmt 0                # axpy_uvm.cu:0:0
+658c622
+< .Ltmp91:
+---
+> .Ltmp83:
+660c624
+< .Ltmp92:
+---
+> .Ltmp84:
+662c626
+< 	.size	_GLOBAL__sub_I_axpy_opt.cu, .Lfunc_end2-_GLOBAL__sub_I_axpy_opt.cu
+---
+> 	.size	_GLOBAL__sub_I_axpy_uvm.cu, .Lfunc_end2-_GLOBAL__sub_I_axpy_uvm.cu
+727c691
+< 	.asciz	"axpy_opt.cu"
+---
+> 	.asciz	"axpy_uvm.cu"
+772c736
+< 	.quad	_GLOBAL__sub_I_axpy_opt.cu
+---
+> 	.quad	_GLOBAL__sub_I_axpy_uvm.cu
+780c744
+< 	.long	17                              # Offset entry count
+---
+> 	.long	16                              # Offset entry count
+798d761
+< 	.long	.Ldebug_loc16-.Lloclists_table_base0
+895c858
+< 	.uleb128 .Ltmp19-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp18-.Lfunc_begin0          #   ending offset
+899,900c862,863
+< 	.uleb128 .Ltmp28-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp31-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp20-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp23-.Lfunc_begin0          #   ending offset
+904,905c867,868
+< 	.uleb128 .Ltmp78-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp82-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp70-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp74-.Lfunc_begin0          #   ending offset
+919,920c882,883
+< 	.uleb128 .Ltmp78-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp79-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp70-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp71-.Lfunc_begin0          #   ending offset
+929c892
+< 	.uleb128 .Ltmp23-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp21-.Lfunc_begin0          #   ending offset
+932c895
+< 	.byte	104                             # -24
+---
+> 	.byte	112                             # -16
+934,935c897,898
+< 	.uleb128 .Ltmp29-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp32-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp21-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp24-.Lfunc_begin0          #   ending offset
+939,940c902,903
+< 	.uleb128 .Ltmp43-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp46-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp35-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp38-.Lfunc_begin0          #   ending offset
+944,945c907,908
+< 	.uleb128 .Ltmp52-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp55-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp44-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp47-.Lfunc_begin0          #   ending offset
+949,950c912,913
+< 	.uleb128 .Ltmp61-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp64-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp53-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp56-.Lfunc_begin0          #   ending offset
+954,955c917,918
+< 	.uleb128 .Ltmp70-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp73-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp62-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp65-.Lfunc_begin0          #   ending offset
+959,960c922,923
+< 	.uleb128 .Ltmp80-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp82-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp72-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp74-.Lfunc_begin0          #   ending offset
+963c926
+< 	.byte	104                             # -24
+---
+> 	.byte	112                             # -16
+974,975c937,938
+< 	.uleb128 .Ltmp80-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp81-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp72-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp73-.Lfunc_begin0          #   ending offset
+991c954
+< 	.uleb128 .Ltmp27-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp19-.Lfunc_begin0          #   ending offset
+1001,1029c964,965
+< 	.uleb128 .Ltmp17-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp18-.Lfunc_begin0          #   ending offset
+< 	.byte	3                               # Loc expr size
+< 	.byte	17                              # DW_OP_consts
+< 	.byte	127                             # -1
+< 	.byte	159                             # DW_OP_stack_value
+< 	.byte	4                               # DW_LLE_offset_pair
+< 	.uleb128 .Ltmp18-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp21-.Lfunc_begin0          #   ending offset
+< 	.byte	2                               # Loc expr size
+< 	.byte	118                             # DW_OP_breg6
+< 	.byte	116                             # -12
+< 	.byte	4                               # DW_LLE_offset_pair
+< 	.uleb128 .Ltmp21-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp22-.Lfunc_begin0          #   ending offset
+< 	.byte	1                               # Loc expr size
+< 	.byte	81                              # super-register DW_OP_reg1
+< 	.byte	4                               # DW_LLE_offset_pair
+< 	.uleb128 .Ltmp24-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp25-.Lfunc_begin0          #   ending offset
+< 	.byte	1                               # Loc expr size
+< 	.byte	81                              # super-register DW_OP_reg1
+< 	.byte	0                               # DW_LLE_end_of_list
+< .Ldebug_loc11:
+< 	.byte	1                               # DW_LLE_base_addressx
+< 	.byte	1                               #   base address index
+< 	.byte	4                               # DW_LLE_offset_pair
+< 	.uleb128 .Ltmp30-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp32-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp22-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp24-.Lfunc_begin0          #   ending offset
+1033c969
+< .Ldebug_loc12:
+---
+> .Ldebug_loc11:
+1037,1038c973,974
+< 	.uleb128 .Ltmp36-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp38-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp28-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp30-.Lfunc_begin0          #   ending offset
+1042,1043c978,979
+< 	.uleb128 .Ltmp82-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp83-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp74-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp75-.Lfunc_begin0          #   ending offset
+1047c983
+< .Ldebug_loc13:
+---
+> .Ldebug_loc12:
+1051,1052c987,988
+< 	.uleb128 .Ltmp38-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp47-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp30-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp39-.Lfunc_begin0          #   ending offset
+1058,1059c994,995
+< 	.uleb128 .Ltmp47-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp56-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp39-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp48-.Lfunc_begin0          #   ending offset
+1065,1066c1001,1002
+< 	.uleb128 .Ltmp56-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp65-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp48-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp57-.Lfunc_begin0          #   ending offset
+1072,1073c1008,1009
+< 	.uleb128 .Ltmp65-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp74-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp57-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp66-.Lfunc_begin0          #   ending offset
+1079,1080c1015,1016
+< 	.uleb128 .Ltmp74-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp77-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp66-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp69-.Lfunc_begin0          #   ending offset
+1086c1022
+< .Ldebug_loc14:
+---
+> .Ldebug_loc13:
+1090,1091c1026,1027
+< 	.uleb128 .Ltmp44-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp45-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp36-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp37-.Lfunc_begin0          #   ending offset
+1095,1096c1031,1032
+< 	.uleb128 .Ltmp53-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp54-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp45-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp46-.Lfunc_begin0          #   ending offset
+1100,1101c1036,1037
+< 	.uleb128 .Ltmp62-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp63-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp54-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp55-.Lfunc_begin0          #   ending offset
+1105,1106c1041,1042
+< 	.uleb128 .Ltmp71-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp72-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp63-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp64-.Lfunc_begin0          #   ending offset
+1110c1046
+< .Ldebug_loc15:
+---
+> .Ldebug_loc14:
+1114,1115c1050,1051
+< 	.uleb128 .Ltmp46-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp47-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp38-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp39-.Lfunc_begin0          #   ending offset
+1119,1120c1055,1056
+< 	.uleb128 .Ltmp55-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp56-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp47-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp48-.Lfunc_begin0          #   ending offset
+1124,1125c1060,1061
+< 	.uleb128 .Ltmp64-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp65-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp56-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp57-.Lfunc_begin0          #   ending offset
+1129,1130c1065,1066
+< 	.uleb128 .Ltmp73-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp74-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp65-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp66-.Lfunc_begin0          #   ending offset
+1134c1070
+< .Ldebug_loc16:
+---
+> .Ldebug_loc15:
+1138,1139c1074,1075
+< 	.uleb128 .Ltmp75-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp77-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp67-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp69-.Lfunc_begin0          #   ending offset
+1143,1144c1079,1080
+< 	.uleb128 .Ltmp84-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp85-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp76-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp77-.Lfunc_begin0          #   ending offset
+2562c2498
+< 	.byte	1                               # Abbrev [1] 0xc:0x3d3b DW_TAG_compile_unit
+---
+> 	.byte	1                               # Abbrev [1] 0xc:0x3cc1 DW_TAG_compile_unit
+11485c11421
+< 	.byte	88                              # Abbrev [88] 0x3abc:0x1e0 DW_TAG_subprogram
+---
+> 	.byte	88                              # Abbrev [88] 0x3abc:0x1a7 DW_TAG_subprogram
+11491c11427
+< 	.short	847                             # DW_AT_name
+---
+> 	.short	843                             # DW_AT_name
+11498c11434
+< 	.short	849                             # DW_AT_name
+---
+> 	.short	845                             # DW_AT_name
+11504c11440
+< 	.short	850                             # DW_AT_name
+---
+> 	.short	846                             # DW_AT_name
+11510c11446
+< 	.short	851                             # DW_AT_name
+---
+> 	.short	847                             # DW_AT_name
+11513c11449
+< 	.long	15669                           # DW_AT_type
+---
+> 	.long	15547                           # DW_AT_type
+11532,11539c11468,11469
+< 	.byte	92                              # Abbrev [92] 0x3b0c:0xa DW_TAG_variable
+< 	.byte	10                              # DW_AT_location
+< 	.short	854                             # DW_AT_name
+< 	.byte	46                              # DW_AT_decl_file
+< 	.byte	35                              # DW_AT_decl_line
+< 	.long	4530                            # DW_AT_type
+< 	.byte	93                              # Abbrev [93] 0x3b16:0x9 DW_TAG_variable
+< 	.short	855                             # DW_AT_name
+---
+> 	.byte	93                              # Abbrev [93] 0x3b0c:0x9 DW_TAG_variable
+> 	.short	850                             # DW_AT_name
+11542,11543c11472,11473
+< 	.long	15674                           # DW_AT_type
+< 	.byte	94                              # Abbrev [94] 0x3b1f:0x30 DW_TAG_lexical_block
+---
+> 	.long	15552                           # DW_AT_type
+> 	.byte	94                              # Abbrev [94] 0x3b15:0x30 DW_TAG_lexical_block
+11545c11475
+< 	.byte	92                              # Abbrev [92] 0x3b21:0xa DW_TAG_variable
+---
+> 	.byte	92                              # Abbrev [92] 0x3b17:0xa DW_TAG_variable
+11547c11477
+< 	.short	852                             # DW_AT_name
+---
+> 	.short	848                             # DW_AT_name
+11551c11481
+< 	.byte	95                              # Abbrev [95] 0x3b2b:0x23 DW_TAG_inlined_subroutine
+---
+> 	.byte	95                              # Abbrev [95] 0x3b21:0x23 DW_TAG_inlined_subroutine
+11558c11488
+< 	.byte	96                              # Abbrev [96] 0x3b38:0x9 DW_TAG_formal_parameter
+---
+> 	.byte	96                              # Abbrev [96] 0x3b2e:0x9 DW_TAG_formal_parameter
+11564c11494
+< 	.byte	97                              # Abbrev [97] 0x3b41:0x6 DW_TAG_formal_parameter
+---
+> 	.byte	97                              # Abbrev [97] 0x3b37:0x6 DW_TAG_formal_parameter
+11567c11497
+< 	.byte	97                              # Abbrev [97] 0x3b47:0x6 DW_TAG_formal_parameter
+---
+> 	.byte	97                              # Abbrev [97] 0x3b3d:0x6 DW_TAG_formal_parameter
+11572c11502
+< 	.byte	94                              # Abbrev [94] 0x3b4f:0x30 DW_TAG_lexical_block
+---
+> 	.byte	94                              # Abbrev [94] 0x3b45:0x30 DW_TAG_lexical_block
+11574c11504
+< 	.byte	92                              # Abbrev [92] 0x3b51:0xa DW_TAG_variable
+---
+> 	.byte	92                              # Abbrev [92] 0x3b47:0xa DW_TAG_variable
+11576c11506
+< 	.short	852                             # DW_AT_name
+---
+> 	.short	848                             # DW_AT_name
+11580c11510
+< 	.byte	95                              # Abbrev [95] 0x3b5b:0x23 DW_TAG_inlined_subroutine
+---
+> 	.byte	95                              # Abbrev [95] 0x3b51:0x23 DW_TAG_inlined_subroutine
+11587c11517
+< 	.byte	96                              # Abbrev [96] 0x3b68:0x9 DW_TAG_formal_parameter
+---
+> 	.byte	96                              # Abbrev [96] 0x3b5e:0x9 DW_TAG_formal_parameter
+11590c11520
+< 	.byte	104
+---
+> 	.byte	112
+11593c11523
+< 	.byte	97                              # Abbrev [97] 0x3b71:0x6 DW_TAG_formal_parameter
+---
+> 	.byte	97                              # Abbrev [97] 0x3b67:0x6 DW_TAG_formal_parameter
+11596c11526
+< 	.byte	97                              # Abbrev [97] 0x3b77:0x6 DW_TAG_formal_parameter
+---
+> 	.byte	97                              # Abbrev [97] 0x3b6d:0x6 DW_TAG_formal_parameter
+11601c11531
+< 	.byte	98                              # Abbrev [98] 0x3b7f:0x11 DW_TAG_lexical_block
+---
+> 	.byte	98                              # Abbrev [98] 0x3b75:0x11 DW_TAG_lexical_block
+11604c11534
+< 	.byte	92                              # Abbrev [92] 0x3b85:0xa DW_TAG_variable
+---
+> 	.byte	92                              # Abbrev [92] 0x3b7b:0xa DW_TAG_variable
+11606c11536
+< 	.short	853                             # DW_AT_name
+---
+> 	.short	849                             # DW_AT_name
+11611c11541
+< 	.byte	95                              # Abbrev [95] 0x3b90:0x1e DW_TAG_inlined_subroutine
+---
+> 	.byte	95                              # Abbrev [95] 0x3b86:0x1e DW_TAG_inlined_subroutine
+11614c11544
+< 	.long	.Ltmp35-.Ltmp31                 # DW_AT_high_pc
+---
+> 	.long	.Ltmp27-.Ltmp23                 # DW_AT_high_pc
+11616c11546
+< 	.byte	41                              # DW_AT_call_line
+---
+> 	.byte	36                              # DW_AT_call_line
+11618c11548
+< 	.byte	97                              # Abbrev [97] 0x3b9d:0xa DW_TAG_formal_parameter
+---
+> 	.byte	97                              # Abbrev [97] 0x3b93:0xa DW_TAG_formal_parameter
+11621,11622c11551,11552
+< 	.byte	82                              # Abbrev [82] 0x3ba7:0x6 DW_TAG_formal_parameter
+< 	.byte	11                              # DW_AT_location
+---
+> 	.byte	82                              # Abbrev [82] 0x3b9d:0x6 DW_TAG_formal_parameter
+> 	.byte	10                              # DW_AT_location
+11625c11555
+< 	.byte	94                              # Abbrev [94] 0x3bae:0xd DW_TAG_lexical_block
+---
+> 	.byte	94                              # Abbrev [94] 0x3ba4:0xd DW_TAG_lexical_block
+11627,11629c11557,11559
+< 	.byte	92                              # Abbrev [92] 0x3bb0:0xa DW_TAG_variable
+< 	.byte	12                              # DW_AT_location
+< 	.short	852                             # DW_AT_name
+---
+> 	.byte	92                              # Abbrev [92] 0x3ba6:0xa DW_TAG_variable
+> 	.byte	11                              # DW_AT_location
+> 	.short	848                             # DW_AT_name
+11631c11561
+< 	.byte	44                              # DW_AT_decl_line
+---
+> 	.byte	39                              # DW_AT_decl_line
+11634c11564
+< 	.byte	98                              # Abbrev [98] 0x3bbb:0x52 DW_TAG_lexical_block
+---
+> 	.byte	98                              # Abbrev [98] 0x3bb1:0x52 DW_TAG_lexical_block
+11636,11639c11566,11569
+< 	.long	.Ltmp74-.Ltmp38                 # DW_AT_high_pc
+< 	.byte	92                              # Abbrev [92] 0x3bc1:0xa DW_TAG_variable
+< 	.byte	13                              # DW_AT_location
+< 	.short	853                             # DW_AT_name
+---
+> 	.long	.Ltmp66-.Ltmp30                 # DW_AT_high_pc
+> 	.byte	92                              # Abbrev [92] 0x3bb7:0xa DW_TAG_variable
+> 	.byte	12                              # DW_AT_location
+> 	.short	849                             # DW_AT_name
+11641c11571
+< 	.byte	47                              # DW_AT_decl_line
+---
+> 	.byte	42                              # DW_AT_decl_line
+11643c11573
+< 	.byte	99                              # Abbrev [99] 0x3bcb:0x9 DW_TAG_inlined_subroutine
+---
+> 	.byte	99                              # Abbrev [99] 0x3bc1:0x9 DW_TAG_inlined_subroutine
+11647c11577
+< 	.byte	48                              # DW_AT_call_line
+---
+> 	.byte	43                              # DW_AT_call_line
+11649c11579
+< 	.byte	100                             # Abbrev [100] 0x3bd4:0x11 DW_TAG_inlined_subroutine
+---
+> 	.byte	100                             # Abbrev [100] 0x3bca:0x11 DW_TAG_inlined_subroutine
+11653c11583
+< 	.byte	48                              # DW_AT_call_line
+---
+> 	.byte	43                              # DW_AT_call_line
+11655c11585
+< 	.byte	96                              # Abbrev [96] 0x3bdd:0x7 DW_TAG_formal_parameter
+---
+> 	.byte	96                              # Abbrev [96] 0x3bd3:0x7 DW_TAG_formal_parameter
+11660c11590
+< 	.byte	100                             # Abbrev [100] 0x3be5:0x17 DW_TAG_inlined_subroutine
+---
+> 	.byte	100                             # Abbrev [100] 0x3bdb:0x17 DW_TAG_inlined_subroutine
+11664c11594
+< 	.byte	48                              # DW_AT_call_line
+---
+> 	.byte	43                              # DW_AT_call_line
+11666c11596
+< 	.byte	96                              # Abbrev [96] 0x3bee:0x7 DW_TAG_formal_parameter
+---
+> 	.byte	96                              # Abbrev [96] 0x3be4:0x7 DW_TAG_formal_parameter
+11670,11671c11600,11601
+< 	.byte	82                              # Abbrev [82] 0x3bf5:0x6 DW_TAG_formal_parameter
+< 	.byte	14                              # DW_AT_location
+---
+> 	.byte	82                              # Abbrev [82] 0x3beb:0x6 DW_TAG_formal_parameter
+> 	.byte	13                              # DW_AT_location
+11674c11604
+< 	.byte	100                             # Abbrev [100] 0x3bfc:0x10 DW_TAG_inlined_subroutine
+---
+> 	.byte	100                             # Abbrev [100] 0x3bf2:0x10 DW_TAG_inlined_subroutine
+11678c11608
+< 	.byte	48                              # DW_AT_call_line
+---
+> 	.byte	43                              # DW_AT_call_line
+11680,11681c11610,11611
+< 	.byte	82                              # Abbrev [82] 0x3c05:0x6 DW_TAG_formal_parameter
+< 	.byte	15                              # DW_AT_location
+---
+> 	.byte	82                              # Abbrev [82] 0x3bfb:0x6 DW_TAG_formal_parameter
+> 	.byte	14                              # DW_AT_location
+11685c11615
+< 	.byte	94                              # Abbrev [94] 0x3c0d:0xd DW_TAG_lexical_block
+---
+> 	.byte	94                              # Abbrev [94] 0x3c03:0xd DW_TAG_lexical_block
+11687,11689c11617,11619
+< 	.byte	92                              # Abbrev [92] 0x3c0f:0xa DW_TAG_variable
+< 	.byte	16                              # DW_AT_location
+< 	.short	852                             # DW_AT_name
+---
+> 	.byte	92                              # Abbrev [92] 0x3c05:0xa DW_TAG_variable
+> 	.byte	15                              # DW_AT_location
+> 	.short	848                             # DW_AT_name
+11691c11621
+< 	.byte	51                              # DW_AT_decl_line
+---
+> 	.byte	46                              # DW_AT_decl_line
+11694,11695c11624,11625
+< 	.byte	101                             # Abbrev [101] 0x3c1a:0x17 DW_TAG_call_site
+< 	.long	15516                           # DW_AT_call_origin
+---
+> 	.byte	101                             # Abbrev [101] 0x3c10:0x17 DW_TAG_call_site
+> 	.long	15459                           # DW_AT_call_origin
+11697c11627
+< 	.byte	102                             # Abbrev [102] 0x3c20:0x5 DW_TAG_call_site_parameter
+---
+> 	.byte	102                             # Abbrev [102] 0x3c16:0x5 DW_TAG_call_site_parameter
+11702c11632
+< 	.byte	102                             # Abbrev [102] 0x3c25:0x5 DW_TAG_call_site_parameter
+---
+> 	.byte	102                             # Abbrev [102] 0x3c1b:0x5 DW_TAG_call_site_parameter
+11707c11637
+< 	.byte	102                             # Abbrev [102] 0x3c2a:0x6 DW_TAG_call_site_parameter
+---
+> 	.byte	102                             # Abbrev [102] 0x3c20:0x6 DW_TAG_call_site_parameter
+11714,11715c11644,11645
+< 	.byte	101                             # Abbrev [101] 0x3c31:0x17 DW_TAG_call_site
+< 	.long	15516                           # DW_AT_call_origin
+---
+> 	.byte	101                             # Abbrev [101] 0x3c27:0x17 DW_TAG_call_site
+> 	.long	15459                           # DW_AT_call_origin
+11717c11647
+< 	.byte	102                             # Abbrev [102] 0x3c37:0x5 DW_TAG_call_site_parameter
+---
+> 	.byte	102                             # Abbrev [102] 0x3c2d:0x5 DW_TAG_call_site_parameter
+11722c11652
+< 	.byte	102                             # Abbrev [102] 0x3c3c:0x5 DW_TAG_call_site_parameter
+---
+> 	.byte	102                             # Abbrev [102] 0x3c32:0x5 DW_TAG_call_site_parameter
+11727c11657
+< 	.byte	102                             # Abbrev [102] 0x3c41:0x6 DW_TAG_call_site_parameter
+---
+> 	.byte	102                             # Abbrev [102] 0x3c37:0x6 DW_TAG_call_site_parameter
+11732c11662
+< 	.byte	104
+---
+> 	.byte	112
+11734,11735c11664,11665
+< 	.byte	101                             # Abbrev [101] 0x3c48:0xd DW_TAG_call_site
+< 	.long	15542                           # DW_AT_call_origin
+---
+> 	.byte	103                             # Abbrev [103] 0x3c3e:0x6 DW_TAG_call_site
+> 	.long	15485                           # DW_AT_call_origin
+11737,11745c11667,11668
+< 	.byte	102                             # Abbrev [102] 0x3c4e:0x6 DW_TAG_call_site_parameter
+< 	.byte	1                               # DW_AT_location
+< 	.byte	85
+< 	.byte	2                               # DW_AT_call_value
+< 	.byte	145
+< 	.byte	116
+< 	.byte	0                               # End Of Children Mark
+< 	.byte	101                             # Abbrev [101] 0x3c55:0x11 DW_TAG_call_site
+< 	.long	15558                           # DW_AT_call_origin
+---
+> 	.byte	103                             # Abbrev [103] 0x3c44:0x6 DW_TAG_call_site
+> 	.long	15495                           # DW_AT_call_origin
+11747,11759c11670,11671
+< 	.byte	102                             # Abbrev [102] 0x3c5b:0x5 DW_TAG_call_site_parameter
+< 	.byte	1                               # DW_AT_location
+< 	.byte	82
+< 	.byte	1                               # DW_AT_call_value
+< 	.byte	48
+< 	.byte	102                             # Abbrev [102] 0x3c60:0x5 DW_TAG_call_site_parameter
+< 	.byte	1                               # DW_AT_location
+< 	.byte	84
+< 	.byte	1                               # DW_AT_call_value
+< 	.byte	64
+< 	.byte	0                               # End Of Children Mark
+< 	.byte	101                             # Abbrev [101] 0x3c66:0x11 DW_TAG_call_site
+< 	.long	15558                           # DW_AT_call_origin
+---
+> 	.byte	103                             # Abbrev [103] 0x3c4a:0x6 DW_TAG_call_site
+> 	.long	15505                           # DW_AT_call_origin
+11761,11773c11673,11674
+< 	.byte	102                             # Abbrev [102] 0x3c6c:0x5 DW_TAG_call_site_parameter
+< 	.byte	1                               # DW_AT_location
+< 	.byte	82
+< 	.byte	1                               # DW_AT_call_value
+< 	.byte	48
+< 	.byte	102                             # Abbrev [102] 0x3c71:0x5 DW_TAG_call_site_parameter
+< 	.byte	1                               # DW_AT_location
+< 	.byte	84
+< 	.byte	1                               # DW_AT_call_value
+< 	.byte	64
+< 	.byte	0                               # End Of Children Mark
+< 	.byte	103                             # Abbrev [103] 0x3c77:0x6 DW_TAG_call_site
+< 	.long	15607                           # DW_AT_call_origin
+---
+> 	.byte	103                             # Abbrev [103] 0x3c50:0x6 DW_TAG_call_site
+> 	.long	15505                           # DW_AT_call_origin
+11775,11776c11676,11677
+< 	.byte	103                             # Abbrev [103] 0x3c7d:0x6 DW_TAG_call_site
+< 	.long	15617                           # DW_AT_call_origin
+---
+> 	.byte	103                             # Abbrev [103] 0x3c56:0x6 DW_TAG_call_site
+> 	.long	15505                           # DW_AT_call_origin
+11778,11779c11679,11680
+< 	.byte	103                             # Abbrev [103] 0x3c83:0x6 DW_TAG_call_site
+< 	.long	15627                           # DW_AT_call_origin
+---
+> 	.byte	103                             # Abbrev [103] 0x3c5c:0x6 DW_TAG_call_site
+> 	.long	15505                           # DW_AT_call_origin
+11781,11789d11681
+< 	.byte	103                             # Abbrev [103] 0x3c89:0x6 DW_TAG_call_site
+< 	.long	15627                           # DW_AT_call_origin
+< 	.byte	16                              # DW_AT_call_return_pc
+< 	.byte	103                             # Abbrev [103] 0x3c8f:0x6 DW_TAG_call_site
+< 	.long	15627                           # DW_AT_call_origin
+< 	.byte	17                              # DW_AT_call_return_pc
+< 	.byte	103                             # Abbrev [103] 0x3c95:0x6 DW_TAG_call_site
+< 	.long	15627                           # DW_AT_call_origin
+< 	.byte	18                              # DW_AT_call_return_pc
+11791c11683
+< 	.byte	55                              # Abbrev [55] 0x3c9c:0x1a DW_TAG_subprogram
+---
+> 	.byte	55                              # Abbrev [55] 0x3c63:0x1a DW_TAG_subprogram
+11798c11690
+< 	.byte	9                               # Abbrev [9] 0x3ca6:0x5 DW_TAG_formal_parameter
+---
+> 	.byte	9                               # Abbrev [9] 0x3c6d:0x5 DW_TAG_formal_parameter
+11800c11692
+< 	.byte	9                               # Abbrev [9] 0x3cab:0x5 DW_TAG_formal_parameter
+---
+> 	.byte	9                               # Abbrev [9] 0x3c72:0x5 DW_TAG_formal_parameter
+11802c11694
+< 	.byte	9                               # Abbrev [9] 0x3cb0:0x5 DW_TAG_formal_parameter
+---
+> 	.byte	9                               # Abbrev [9] 0x3c77:0x5 DW_TAG_formal_parameter
+11805c11697
+< 	.byte	55                              # Abbrev [55] 0x3cb6:0x10 DW_TAG_subprogram
+---
+> 	.byte	65                              # Abbrev [65] 0x3c7d:0xa DW_TAG_subprogram
+11808,11843d11699
+< 	.short	2095                            # DW_AT_decl_line
+< 	.long	14905                           # DW_AT_type
+<                                         # DW_AT_declaration
+<                                         # DW_AT_external
+< 	.byte	9                               # Abbrev [9] 0x3cc0:0x5 DW_TAG_formal_parameter
+< 	.long	5491                            # DW_AT_type
+< 	.byte	0                               # End Of Children Mark
+< 	.byte	55                              # Abbrev [55] 0x3cc6:0x1f DW_TAG_subprogram
+< 	.short	840                             # DW_AT_name
+< 	.byte	50                              # DW_AT_decl_file
+< 	.short	7319                            # DW_AT_decl_line
+< 	.long	14905                           # DW_AT_type
+<                                         # DW_AT_declaration
+<                                         # DW_AT_external
+< 	.byte	9                               # Abbrev [9] 0x3cd0:0x5 DW_TAG_formal_parameter
+< 	.long	8701                            # DW_AT_type
+< 	.byte	9                               # Abbrev [9] 0x3cd5:0x5 DW_TAG_formal_parameter
+< 	.long	8707                            # DW_AT_type
+< 	.byte	9                               # Abbrev [9] 0x3cda:0x5 DW_TAG_formal_parameter
+< 	.long	4530                            # DW_AT_type
+< 	.byte	9                               # Abbrev [9] 0x3cdf:0x5 DW_TAG_formal_parameter
+< 	.long	15589                           # DW_AT_type
+< 	.byte	0                               # End Of Children Mark
+< 	.byte	29                              # Abbrev [29] 0x3ce5:0xa DW_TAG_typedef
+< 	.long	15599                           # DW_AT_type
+< 	.short	842                             # DW_AT_name
+< 	.byte	4                               # DW_AT_decl_file
+< 	.short	2795                            # DW_AT_decl_line
+< 	.byte	43                              # Abbrev [43] 0x3cef:0x5 DW_TAG_pointer_type
+< 	.long	15604                           # DW_AT_type
+< 	.byte	72                              # Abbrev [72] 0x3cf4:0x3 DW_TAG_structure_type
+< 	.short	841                             # DW_AT_name
+<                                         # DW_AT_declaration
+< 	.byte	65                              # Abbrev [65] 0x3cf7:0xa DW_TAG_subprogram
+< 	.short	843                             # DW_AT_name
+< 	.byte	50                              # DW_AT_decl_file
+11848,11849c11704,11705
+< 	.byte	65                              # Abbrev [65] 0x3d01:0xa DW_TAG_subprogram
+< 	.short	844                             # DW_AT_name
+---
+> 	.byte	65                              # Abbrev [65] 0x3c87:0xa DW_TAG_subprogram
+> 	.short	840                             # DW_AT_name
+11855,11856c11711,11712
+< 	.byte	55                              # Abbrev [55] 0x3d0b:0x10 DW_TAG_subprogram
+< 	.short	845                             # DW_AT_name
+---
+> 	.byte	55                              # Abbrev [55] 0x3c91:0x10 DW_TAG_subprogram
+> 	.short	841                             # DW_AT_name
+11862c11718
+< 	.byte	9                               # Abbrev [9] 0x3d15:0x5 DW_TAG_formal_parameter
+---
+> 	.byte	9                               # Abbrev [9] 0x3c9b:0x5 DW_TAG_formal_parameter
+11865,11866c11721,11722
+< 	.byte	104                             # Abbrev [104] 0x3d1b:0x3 DW_TAG_subprogram
+< 	.short	846                             # DW_AT_name
+---
+> 	.byte	104                             # Abbrev [104] 0x3ca1:0x3 DW_TAG_subprogram
+> 	.short	842                             # DW_AT_name
+11869,11870c11725,11726
+< 	.byte	105                             # Abbrev [105] 0x3d1e:0x17 DW_TAG_subprogram
+< 	.byte	19                              # DW_AT_low_pc
+---
+> 	.byte	105                             # Abbrev [105] 0x3ca4:0x17 DW_TAG_subprogram
+> 	.byte	16                              # DW_AT_low_pc
+11875c11731
+< 	.short	848                             # DW_AT_linkage_name
+---
+> 	.short	844                             # DW_AT_linkage_name
+11877,11880c11733,11736
+< 	.byte	106                             # Abbrev [106] 0x3d28:0xc DW_TAG_inlined_subroutine
+< 	.long	15643                           # DW_AT_abstract_origin
+< 	.byte	20                              # DW_AT_low_pc
+< 	.long	.Ltmp92-.Ltmp89                 # DW_AT_high_pc
+---
+> 	.byte	106                             # Abbrev [106] 0x3cae:0xc DW_TAG_inlined_subroutine
+> 	.long	15521                           # DW_AT_abstract_origin
+> 	.byte	17                              # DW_AT_low_pc
+> 	.long	.Ltmp84-.Ltmp81                 # DW_AT_high_pc
+11884c11740
+< 	.byte	45                              # Abbrev [45] 0x3d35:0x5 DW_TAG_const_type
+---
+> 	.byte	45                              # Abbrev [45] 0x3cbb:0x5 DW_TAG_const_type
+11886c11742
+< 	.byte	68                              # Abbrev [68] 0x3d3a:0xc DW_TAG_array_type
+---
+> 	.byte	68                              # Abbrev [68] 0x3cc0:0xc DW_TAG_array_type
+11888c11744
+< 	.byte	69                              # Abbrev [69] 0x3d3f:0x6 DW_TAG_subrange_type
+---
+> 	.byte	69                              # Abbrev [69] 0x3cc5:0x6 DW_TAG_subrange_type
+11918,11919c11774,11775
+< 	.uleb128 .Ltmp78-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp80-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp70-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp72-.Lfunc_begin0          #   ending offset
+11928,11929c11784,11785
+< 	.uleb128 .Ltmp80-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp82-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp72-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp74-.Lfunc_begin0          #   ending offset
+11935,11936c11791,11792
+< 	.uleb128 .Ltmp35-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp38-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp27-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp30-.Lfunc_begin0          #   ending offset
+11938,11939c11794,11795
+< 	.uleb128 .Ltmp82-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp84-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp74-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp76-.Lfunc_begin0          #   ending offset
+11945,11946c11801,11802
+< 	.uleb128 .Ltmp38-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp39-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp30-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp31-.Lfunc_begin0          #   ending offset
+11948,11949c11804,11805
+< 	.uleb128 .Ltmp47-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp48-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp39-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp40-.Lfunc_begin0          #   ending offset
+11951,11952c11807,11808
+< 	.uleb128 .Ltmp56-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp57-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp48-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp49-.Lfunc_begin0          #   ending offset
+11954,11955c11810,11811
+< 	.uleb128 .Ltmp65-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp66-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp57-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp58-.Lfunc_begin0          #   ending offset
+11961,11962c11817,11818
+< 	.uleb128 .Ltmp41-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp42-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp33-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp34-.Lfunc_begin0          #   ending offset
+11964,11965c11820,11821
+< 	.uleb128 .Ltmp50-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp51-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp42-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp43-.Lfunc_begin0          #   ending offset
+11967,11968c11823,11824
+< 	.uleb128 .Ltmp59-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp60-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp51-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp52-.Lfunc_begin0          #   ending offset
+11970,11971c11826,11827
+< 	.uleb128 .Ltmp68-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp69-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp60-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp61-.Lfunc_begin0          #   ending offset
+11977,11978c11833,11834
+< 	.uleb128 .Ltmp44-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp46-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp36-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp38-.Lfunc_begin0          #   ending offset
+11980,11981c11836,11837
+< 	.uleb128 .Ltmp53-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp55-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp45-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp47-.Lfunc_begin0          #   ending offset
+11983,11984c11839,11840
+< 	.uleb128 .Ltmp62-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp64-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp54-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp56-.Lfunc_begin0          #   ending offset
+11986,11987c11842,11843
+< 	.uleb128 .Ltmp71-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp73-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp63-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp65-.Lfunc_begin0          #   ending offset
+11993,11994c11849,11850
+< 	.uleb128 .Ltmp46-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp47-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp38-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp39-.Lfunc_begin0          #   ending offset
+11996,11997c11852,11853
+< 	.uleb128 .Ltmp55-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp56-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp47-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp48-.Lfunc_begin0          #   ending offset
+11999,12000c11855,11856
+< 	.uleb128 .Ltmp64-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp65-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp56-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp57-.Lfunc_begin0          #   ending offset
+12002,12003c11858,11859
+< 	.uleb128 .Ltmp73-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp74-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp65-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp66-.Lfunc_begin0          #   ending offset
+12009,12010c11865,11866
+< 	.uleb128 .Ltmp74-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp77-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp66-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp69-.Lfunc_begin0          #   ending offset
+12012,12013c11868,11869
+< 	.uleb128 .Ltmp84-.Lfunc_begin0          #   starting offset
+< 	.uleb128 .Ltmp86-.Lfunc_begin0          #   ending offset
+---
+> 	.uleb128 .Ltmp76-.Lfunc_begin0          #   starting offset
+> 	.uleb128 .Ltmp78-.Lfunc_begin0          #   ending offset
+12020c11876
+< 	.byte	19                              #   start index
+---
+> 	.byte	16                              #   start index
+12025c11881
+< 	.long	3428                            # Length of String Offsets Set
+---
+> 	.long	3408                            # Length of String Offsets Set
+12033c11889
+< 	.asciz	"axpy_opt.cu"                   # string offset=21
+---
+> 	.asciz	"axpy_uvm.cu"                   # string offset=21
+13709c13565
+< 	.asciz	"cudaGetDevice"                 # string offset=11094
+---
+> 	.asciz	"cudaDeviceSynchronize"         # string offset=11094
+13711c13567
+< 	.asciz	"cudaMemPrefetchAsync"          # string offset=11108
+---
+> 	.asciz	"cudaDeviceReset"               # string offset=11116
+13713c13569
+< 	.asciz	"CUstream_st"                   # string offset=11129
+---
+> 	.asciz	"cudaGetErrorString"            # string offset=11132
+13715c13571
+< 	.asciz	"cudaStream_t"                  # string offset=11141
+---
+> 	.asciz	"__cxx_global_var_init"         # string offset=11151
+13717c13573
+< 	.asciz	"cudaDeviceSynchronize"         # string offset=11154
+---
+> 	.asciz	"main"                          # string offset=11173
+13719c13575
+< 	.asciz	"cudaDeviceReset"               # string offset=11176
+---
+> 	.asciz	"_GLOBAL__sub_I_axpy_uvm.cu"    # string offset=11178
+13721c13577
+< 	.asciz	"cudaGetErrorString"            # string offset=11192
+---
+> 	.asciz	"argc"                          # string offset=11205
+13723c13579
+< 	.asciz	"__cxx_global_var_init"         # string offset=11211
+---
+> 	.asciz	"argv"                          # string offset=11210
+13725c13581
+< 	.asciz	"main"                          # string offset=11233
+---
+> 	.asciz	"kDataLen"                      # string offset=11215
+13727c13583
+< 	.asciz	"_GLOBAL__sub_I_axpy_opt.cu"    # string offset=11238
+---
+> 	.asciz	"err"                           # string offset=11224
+13729c13585
+< 	.asciz	"argc"                          # string offset=11265
+---
+> 	.asciz	"i"                             # string offset=11228
+13731,13741c13587
+< 	.asciz	"argv"                          # string offset=11270
+< .Linfo_string851:
+< 	.asciz	"kDataLen"                      # string offset=11275
+< .Linfo_string852:
+< 	.asciz	"err"                           # string offset=11284
+< .Linfo_string853:
+< 	.asciz	"i"                             # string offset=11288
+< .Linfo_string854:
+< 	.asciz	"device"                        # string offset=11290
+< .Linfo_string855:
+< 	.asciz	"host_x"                        # string offset=11297
+---
+> 	.asciz	"host_x"                        # string offset=11230
+14594,14598d14439
+< 	.long	.Linfo_string851
+< 	.long	.Linfo_string852
+< 	.long	.Linfo_string853
+< 	.long	.Linfo_string854
+< 	.long	.Linfo_string855
+14612,14613c14453,14454
+< 	.quad	.Ltmp31
+< 	.quad	.Ltmp38
+---
+> 	.quad	.Ltmp23
+> 	.quad	.Ltmp30
+14616,14619c14457,14460
+< 	.quad	.Ltmp19
+< 	.quad	.Ltmp22
+< 	.quad	.Ltmp25
+< 	.quad	.Ltmp36
+---
+> 	.quad	.Ltmp28
+> 	.quad	.Ltmp67
+> 	.quad	.Ltmp71
+> 	.quad	.Ltmp73
+14621,14624c14462
+< 	.quad	.Ltmp79
+< 	.quad	.Ltmp81
+< 	.quad	.Ltmp83
+< 	.quad	.Ltmp85
+---
+> 	.quad	.Ltmp77
+14626c14464
+< 	.quad	.Ltmp89
+---
+> 	.quad	.Ltmp81
