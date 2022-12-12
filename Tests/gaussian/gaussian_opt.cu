@@ -165,7 +165,6 @@ int main(int argc, char *argv[])
     gettimeofday(&time_start, NULL);	
     int device = -1;
     cudaGetDevice(&device);
-    printf("Cuda device: %d\n", device);
     cudaMemPrefetchAsync(a, Size * Size * sizeof(float), device, NULL);
     cudaMemPrefetchAsync(b, Size * sizeof(float), device, NULL);
     cudaMemPrefetchAsync(m, Size * Size * sizeof(float), device, NULL);
