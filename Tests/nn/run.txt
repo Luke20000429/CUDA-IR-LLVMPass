@@ -1,3 +1,5 @@
-./hurricane_gen 42760 4
+./hurricane_gen 500000 10
 
-./nn filelist_4 -r 5 -lat 30 -lng 90
+./nn filelist_10 -r 10240 -lat 30 -lng 90 -q
+
+nvprof ./nn_opt filelist_10 -r 10240 -lat 10 -lng 90 -q

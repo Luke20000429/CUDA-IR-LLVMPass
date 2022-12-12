@@ -88,6 +88,7 @@ int main(int argc, char* argv[])
 
     //Pointers to host memory
 	float *distances;
+  LatLong *h_locations;
 	//Pointers to device memory
 	LatLong *d_locations;
 	float *d_distances;
@@ -132,13 +133,15 @@ int main(int argc, char* argv[])
 	* Allocate memory on host and device
 	*/
 	distances = (float *)malloc(sizeof(float) * numRecords);
+  h_locations = (LatLong *)malloc(sizeof(LatLong) * numRecords);
+  memcpy(h_locations, &locations[0], sizeof(LatLong) * numRecords);
 	cudaMalloc((void **) &d_locations,sizeof(LatLong) * numRecords);
 	cudaMalloc((void **) &d_distances,sizeof(float) * numRecords);
 
    /**
     * Transfer data from host to device
     */
-    cudaMemcpy( d_locations, &locations[0], sizeof(LatLong) * numRecords, cudaMemcpyHostToDevice);
+    cudaMemcpy( d_locations, h_locations, sizeof(LatLong) * numRecords, cudaMemcpyHostToDevice);
 
     /**
     * Execute kernel
@@ -158,6 +161,7 @@ int main(int argc, char* argv[])
       printf("%s --> Distance=%f\n",records[i].recString,records[i].distance);
     }
     free(distances);
+    free(h_locations);
     //Free memory
 	cudaFree(d_locations);
 	cudaFree(d_distances);
