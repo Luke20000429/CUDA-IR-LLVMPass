@@ -2,3 +2,8 @@
 ./gaussian -s 12 -q
 
 # -q means quiet
+
+# to run profile
+nvprof ./gaussian -s 4000 -q
+nvprof ./gaussian_uvm -s 4000 -q
+nvprof ./gaussian_opt -s 4000 -q

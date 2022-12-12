@@ -134,14 +134,17 @@ int main(int argc, char *argv[])
               Size = atoi(argv[i]);
 	      printf("Create matrix internally in parse, size = %d \n", Size);
 
-	      a = (float *) malloc(Size * Size * sizeof(float));
+	    //   a = (float *) malloc(Size * Size * sizeof(float));
+          cudaMallocManaged(&a, Size * Size * sizeof(float));
 	      create_matrix(a, Size);
 
-	      b = (float *) malloc(Size * sizeof(float));
+	    //   b = (float *) malloc(Size * sizeof(float));
+          cudaMallocManaged(&b, Size * sizeof(float));
 	      for (j =0; j< Size; j++)
 	    	b[j]=1.0;
 
-	      m = (float *) malloc(Size * Size * sizeof(float));
+	    //   m = (float *) malloc(Size * Size * sizeof(float));
+          cudaMallocManaged(&m, Size * Size * sizeof(float));
               break;
             case 'f': // platform
               i++;
@@ -160,6 +163,12 @@ int main(int argc, char *argv[])
     //begin timing
     struct timeval time_start;
     gettimeofday(&time_start, NULL);	
+    int device = -1;
+    cudaGetDevice(&device);
+    printf("Cuda device: %d\n", device);
+    cudaMemPrefetchAsync(a, Size * Size * sizeof(float), device, NULL);
+    cudaMemPrefetchAsync(b, Size * sizeof(float), device, NULL);
+    cudaMemPrefetchAsync(m, Size * Size * sizeof(float), device, NULL);
     
     // run kernels
     ForwardSub();
@@ -190,9 +199,12 @@ int main(int argc, char *argv[])
     /*printf("%d,%d\n",size,time_total);
     fprintf(stderr,"%d,%d\n",size,time_total);*/
     
-    free(m);
-    free(a);
-    free(b);
+    // free(m);
+    // free(a);
+    // free(b);
+    cudaFree(m);
+    cudaFree(a);
+    cudaFree(b);
 }
 /*------------------------------------------------------
  ** PrintDeviceProperties
@@ -252,18 +264,18 @@ void InitProblemOnce(char *filename)
 	
 	fscanf(fp, "%d", &Size);	
 	 
-	a = (float *) malloc(Size * Size * sizeof(float));
+	cudaMallocManaged(&a, Size * Size * sizeof(float));
 	 
 	InitMat(a, Size, Size);
 	//printf("The input matrix a is:\n");
 	//PrintMat(a, Size, Size);
-	b = (float *) malloc(Size * sizeof(float));
+	cudaMallocManaged(&b, Size * sizeof(float));
 	
 	InitAry(b, Size);
 	//printf("The input array b is:\n");
 	//PrintAry(b, Size);
 		
-	 m = (float *) malloc(Size * Size * sizeof(float));
+	cudaMallocManaged(&m, Size * Size * sizeof(float));
 }
 
 /*------------------------------------------------------
@@ -286,8 +298,8 @@ void InitPerRun()
  ** of t which is defined on the ForwardSub().
  **-------------------------------------------------------
  */
-__global__ void Fan1(float *m_cuda, float *a_cuda, int Size, int t)
-{   
+__global__ void Fan1(float *m_cuda, float *a_cuda, int Size, int t) 
+{
 	//if(threadIdx.x + blockIdx.x * blockDim.x >= Size-1-t) printf(".");
 	//printf("blockIDx.x:%d,threadIdx.x:%d,Size:%d,t:%d,Size-1-t:%d\n",blockIdx.x,threadIdx.x,Size,t,Size-1-t);
 
@@ -326,19 +338,6 @@ __global__ void Fan2(float *m_cuda, float *a_cuda, float *b_cuda,int Size, int j
 void ForwardSub()
 {
 	int t;
-    float *m_cuda,*a_cuda,*b_cuda;
-	
-	// allocate memory on GPU
-	cudaMalloc((void **) &m_cuda, Size * Size * sizeof(float));
-	 
-	cudaMalloc((void **) &a_cuda, Size * Size * sizeof(float));
-	
-	cudaMalloc((void **) &b_cuda, Size * sizeof(float));	
-
-	// copy memory to GPU
-	cudaMemcpy(m_cuda, m, Size * Size * sizeof(float),cudaMemcpyHostToDevice );
-	cudaMemcpy(a_cuda, a, Size * Size * sizeof(float),cudaMemcpyHostToDevice );
-	cudaMemcpy(b_cuda, b, Size * sizeof(float),cudaMemcpyHostToDevice );
 	
 	int block_size,grid_size;
 	
@@ -362,9 +361,11 @@ void ForwardSub()
     struct timeval time_start;
     gettimeofday(&time_start, NULL);
 	for (t=0; t<(Size-1); t++) {
-		Fan1<<<dimGrid,dimBlock>>>(m_cuda,a_cuda,Size,t);
+		// Fan1<<<dimGrid,dimBlock>>>(m_cuda,a_cuda,Size,t);
+        Fan1<<<dimGrid,dimBlock>>>(m, a, Size, t);
 		cudaDeviceSynchronize();
-		Fan2<<<dimGridXY,dimBlockXY>>>(m_cuda,a_cuda,b_cuda,Size,Size-t,t);
+		// Fan2<<<dimGridXY,dimBlockXY>>>(m_cuda,a_cuda,b_cuda,Size,Size-t,t);
+        Fan2<<<dimGridXY,dimBlockXY>>>(m, a, b, Size, Size-t, t);
 		cudaDeviceSynchronize();
 		checkCUDAError("Fan2");
 	}
@@ -372,14 +373,6 @@ void ForwardSub()
 	struct timeval time_end;
     gettimeofday(&time_end, NULL);
     totalKernelTime = (time_end.tv_sec * 1000000 + time_end.tv_usec) - (time_start.tv_sec * 1000000 + time_start.tv_usec);
-	
-	// copy memory back to CPU
-	cudaMemcpy(m, m_cuda, Size * Size * sizeof(float),cudaMemcpyDeviceToHost );
-	cudaMemcpy(a, a_cuda, Size * Size * sizeof(float),cudaMemcpyDeviceToHost );
-	cudaMemcpy(b, b_cuda, Size * sizeof(float),cudaMemcpyDeviceToHost );
-	cudaFree(m_cuda);
-	cudaFree(a_cuda);
-	cudaFree(b_cuda);
 }
 
 /*------------------------------------------------------
