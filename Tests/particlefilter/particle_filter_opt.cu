@@ -464,9 +464,6 @@ void particleFilter(int * I, int IszX, int IszY, int Nfr, int * seed, int Nparti
 	check_error(cudaMallocManaged((void **) &yj, sizeof(double)*Nparticles));
 	check_error(cudaMallocManaged((void **) &CDF, sizeof(double)*Nparticles));
 	check_error(cudaMallocManaged((void **) &u, sizeof(double)*Nparticles));
-
-    cudaMemPrefetchAsync(xj, Nparticles*sizeof(double), 0, NULL);
-    cudaMemPrefetchAsync(yj, Nparticles*sizeof(double), 0, NULL);
 	
 	for(x = 0; x < Nparticles; x++){
 		arrayX[x] = xe;
@@ -476,6 +473,8 @@ void particleFilter(int * I, int IszX, int IszY, int Nfr, int * seed, int Nparti
 	//double * Ik = (double *)malloc(sizeof(double)*IszX*IszY);
 	int indX, indY;
 	for(k = 1; k < Nfr; k++){
+        cudaMemPrefetchAsync(xj, Nparticles*sizeof(double), 0, NULL);
+        cudaMemPrefetchAsync(yj, Nparticles*sizeof(double), 0, NULL);
 		long long set_arrays = get_time();
 		//printf("TIME TO SET ARRAYS TOOK: %f\n", elapsed_time(get_weights, set_arrays));
 		//apply motion model
@@ -486,8 +485,6 @@ void particleFilter(int * I, int IszX, int IszY, int Nfr, int * seed, int Nparti
 			arrayX[x] = arrayX[x] + 1.0 + 5.0*randn(seed, x);
 			arrayY[x] = arrayY[x] - 2.0 + 2.0*randn(seed, x);
 		}
-        cudaMemPrefetchAsync(arrayX, Nparticles*sizeof(double), 0, NULL);
-        cudaMemPrefetchAsync(arrayY, Nparticles*sizeof(double), 0, NULL);
 		//particle filter likelihood
 		long long error = get_time();
 		printf("TIME TO SET ERROR TOOK: %f\n", elapsed_time(set_arrays, error));
@@ -535,6 +532,8 @@ void particleFilter(int * I, int IszX, int IszY, int Nfr, int * seed, int Nparti
 			xe += arrayX[x] * weights[x];
 			ye += arrayY[x] * weights[x];
 		}
+        cudaMemPrefetchAsync(arrayX, Nparticles*sizeof(double), 0, NULL);
+        cudaMemPrefetchAsync(arrayY, Nparticles*sizeof(double), 0, NULL);
 		long long move_time = get_time();
 		printf("TIME TO MOVE OBJECT TOOK: %f\n", elapsed_time(normalize, move_time));
 		printf("XE: %lf\n", xe);
@@ -546,13 +545,11 @@ void particleFilter(int * I, int IszX, int IszY, int Nfr, int * seed, int Nparti
 		//pause(hold off for now)
 		
 		//resampling
-		
-		
+
 		CDF[0] = weights[0];
 		for(x = 1; x < Nparticles; x++){
 			CDF[x] = weights[x] + CDF[x-1];
 		}
-        cudaMemPrefetchAsync(CDF, Nparticles*sizeof(double), 0, NULL);
 		long long cum_sum = get_time();
 		printf("TIME TO CALC CUM SUM TOOK: %f\n", elapsed_time(move_time, cum_sum));
 		double u1 = (1/((double)(Nparticles)))*randu(seed, 0);
@@ -560,13 +557,15 @@ void particleFilter(int * I, int IszX, int IszY, int Nfr, int * seed, int Nparti
 			u[x] = u1 + x/((double)(Nparticles));
 		}
         cudaMemPrefetchAsync(u, Nparticles*sizeof(double), 0, NULL);
+        cudaMemPrefetchAsync(CDF, Nparticles*sizeof(double), 0, NULL);
+
 		long long u_time = get_time();
 		printf("TIME TO CALC U TOOK: %f\n", elapsed_time(cum_sum, u_time));
 		long long start_copy = get_time();
 		long long end_copy = get_time();
 		//Set number of threads
 		int num_blocks = ceil((double) Nparticles/(double) threads_per_block);
-		
+        
 		//KERNEL FUNCTION CALL
 		kernel <<< num_blocks, threads_per_block >>> (arrayX, arrayY, CDF, u, xj, yj, Nparticles);
                 cudaDeviceSynchronize();

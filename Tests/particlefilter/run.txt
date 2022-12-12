@@ -1,3 +1,7 @@
 ./particle_filter -x 128 -y 128 -z 10 -np 1000
 
 nvprof ./particle_filter_uvm -x 128 -y 128 -z 4 -np 1000000
+nvprof ./particle_filter_opt -x 128 -y 128 -z 4 -np 1000000
+
+nvprof ./particle_filter_opt -x 128 -y 128 -z 4 -np 400000
+nvprof ./particle_filter_uvm -x 128 -y 128 -z 4 -np 400000
