@@ -1,0 +1,4 @@
+./gaussian -f data/matrix1024.txt -q
+./gaussian -s 12 -q
+
+# -q means quiet
