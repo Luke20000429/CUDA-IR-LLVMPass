@@ -1,0 +1,3 @@
+./hurricane_gen 42760 4
+
+./nn filelist_4 -r 5 -lat 30 -lng 90
