@@ -1,4 +1,8 @@
 *.bc
 *.fatbin
 *.o
+*.vscode
+build
+*.ll
+
 
