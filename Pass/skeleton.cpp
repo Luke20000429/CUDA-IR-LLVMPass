@@ -67,6 +67,36 @@ namespace {
               }
             }
           }
+          if(InvokeInst* ci = dyn_cast<InvokeInst>(&i)) {
+            auto call_name = ci->getCalledFunction()->getName();
+
+            if (call_name.find("_ZL17cudaMallocManaged") != std::string::npos) {
+              errs() << "Call malloc function: " << call_name << "\n";
+              auto addr = ci->getArgOperand(0);
+              auto size = ci->getArgOperand(1);
+              errs() << "Address name: " << *addr << " size: " << *size << "\n"; 
+              uvm[addr] = size;
+            }
+            if (call_name.find("__device_stub__") != std::string::npos) {
+              errs() << "Call kernel: " << call_name << "\n";
+              for (auto &arg : ci->args()) {
+                errs() << arg->getNameOrAsOperand() << " " << *arg->getType() << "\n";
+                if (arg->getType()->isPointerTy()) {
+                  if (LoadInst *li = dyn_cast<LoadInst>(arg)) {
+                    auto addr = li->getOperand(0);
+                    auto it = uvm.find(addr);
+                    if (it != uvm.end()) {
+                      errs() << "uvm addr: " << *addr << ", size " << uvm[addr]->getNameOrAsOperand() << "\n";
+                      IRBuilder<> builder(ci); // insert instructions ahead of it
+                      insertPrefetchFunc(builder, ctx, Mod, addr, uvm[addr]);
+                    } else {
+                      errs() << "addr: " << *addr << " not a unified memory" << "\n";
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
 
