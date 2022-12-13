@@ -44,10 +44,7 @@ namespace {
               errs() << "Call malloc function: " << call_name << "\n";
               auto addr = ci->getArgOperand(0);
               auto size = ci->getArgOperand(1);
-              errs() << "Address name: " << *addr << " size: " << *size << " addr space " << addr->getType()->getPointerAddressSpace() << "\n"; 
-              // IRBuilder<> builder(ci->getNextNode());
-              // insertPrefetchFuncByPP(builder, ctx, Mod, addr, size);
-              errs() << "Address name: " << addr << " size: " << size << "\n"; 
+              errs() << "Address name: " << *addr << " size: " << *size << "\n"; 
               uvm[addr] = size;
             }
             if (call_name.find("__device_stub__") != std::string::npos) {
@@ -57,10 +54,14 @@ namespace {
                 if (arg->getType()->isPointerTy()) {
                   if (LoadInst *li = dyn_cast<LoadInst>(arg)) {
                     auto addr = li->getOperand(0);
-                    errs() << "addr: " << addr->getNameOrAsOperand() << "\n";
-                    errs() << "addr: " << *addr << " size " << uvm[addr]->getNameOrAsOperand() << "\n";
-                    IRBuilder<> builder(ci);
-                    insertPrefetchFuncByPP(builder, ctx, Mod, addr, uvm[addr]);
+                    auto it = uvm.find(addr);
+                    if (it != uvm.end()) {
+                      errs() << "uvm addr: " << *addr << ", size " << uvm[addr]->getNameOrAsOperand() << "\n";
+                      IRBuilder<> builder(ci); // insert instructions ahead of it
+                      insertPrefetchFunc(builder, ctx, Mod, addr, uvm[addr]);
+                    } else {
+                      errs() << "addr: " << *addr << " not a unified memory" << "\n";
+                    }
                   }
                 }
               }
@@ -72,20 +73,7 @@ namespace {
       return false;
     }
 
-    int insertPrefetchFuncByP(IRBuilder<> &builder, LLVMContext& ctx, Module* Mod, Value *arr, Value *size) {
-      // by p is using pointer to type, like float*
-      FunctionCallee prefetch = declarePrefetchFunc(ctx, Mod);
-      // Value* arr = builder.CreateLoad(Type::getFloatPtrTy(ctx), addr, "uvm_" + std::to_string(var_cnt));
-      Value* vptr = builder.CreateBitCast(arr, Type::getInt8PtrTy(ctx), "cast_" + std::to_string(var_cnt));
-      Value* device = builder.getInt32(0); // use device 0 by default
-      Value *null_pointer = ConstantPointerNull::get(PointerType::get(StructType::getTypeByName(ctx, "struct.CUstream_st"), 0));
-      Value* args[] = {vptr, size, device, null_pointer};
-      builder.CreateCall(prefetch, args);
-      var_cnt++;
-      return 0;
-    }
-
-    int insertPrefetchFuncByPP(IRBuilder<> &builder, LLVMContext& ctx, Module* Mod, Value *addr, Value *size) {
+    int insertPrefetchFunc(IRBuilder<> &builder, LLVMContext& ctx, Module* Mod, Value *addr, Value *size) {
       // by pp is using pointer to pointer to type, like float**
       FunctionCallee prefetch = declarePrefetchFunc(ctx, Mod);
       Value* arr = builder.CreateLoad(Type::getFloatPtrTy(ctx), addr, "uvm_" + std::to_string(var_cnt));
@@ -95,6 +83,7 @@ namespace {
       Value* args[] = {vptr, size, device, null_pointer};
       builder.CreateCall(prefetch, args);
       var_cnt++;
+      errs() << "Insert prefetch\n";
       return 0;
     }
 
@@ -108,11 +97,11 @@ namespace {
                               st->getPointerTo()
             };
         FunctionType* prefetch = FunctionType::get(returnType, fArgs, false);
-        errs() << "Insert prefetch\n";
         // declare dso_local i32 @cudaMemPrefetchAsync(i8* noundef, i64 noundef, i32 noundef, %struct.CUstream_st* noundef) #1
         // pass (addr, size, 0, null), where addr require bitcast to i8* first
         return module->getOrInsertFunction(StringRef("cudaMemPrefetchAsync"), prefetch);
       }
+      errs() << "CUstream_st undefined, failed to declare prefetch in this module\n";
       return FunctionCallee(); // how to deal with this ?
     }
 
