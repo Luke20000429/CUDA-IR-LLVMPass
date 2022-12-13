@@ -24,7 +24,7 @@ namespace {
   
   struct SkeletonPass : public FunctionPass {
     static char ID;
-    Type *st;
+    unsigned var_cnt = 0;
     SkeletonPass() : FunctionPass(ID) {}
 
     virtual bool runOnFunction(Function &F) {
@@ -53,22 +53,34 @@ namespace {
       // if (st != nullptr) {
       //   errs() << "find type" << *st << *st->getPointerTo() << "\n";
       // }
+      FunctionCallee ff = insertPrefetchFunc(ctx, Mod);
       for (auto &bb : F) {
         for (auto &i : bb) {
           if(CallInst* ci = dyn_cast<CallInst>(&i)) {
             auto call_name = ci->getCalledFunction()->getName();
-            // if (call_name.find("_ZL17cudaMallocManaged") != std::string::npos) {
-            //   errs() << "Call malloc function: " << call_name << "\n";
-            //   for (auto &arg : ci->args()) {
-            //     errs() << arg->getNameOrAsOperand() << " " << *arg->getType() << "\n";
-            //     for (auto user : arg->users()) {
-            //       Instruction* use_inst;
-            //       if ((use_inst = dyn_cast<Instruction>(user)) && use_inst->mayReadFromMemory()) {
-            //         errs() << "User: " << *user << "\n";
-            //       }
-            //     }
-            //   }
-            // }
+            if (call_name.find("_ZL17cudaMallocManaged") != std::string::npos) {
+              errs() << "Call malloc function: " << call_name << "\n";
+              auto addr = ci->getArgOperand(0);
+              auto size = ci->getArgOperand(1);
+              errs() << "Address name: " << addr->getNameOrAsOperand() << " size: " << size->getNameOrAsOperand() << "\n"; 
+              IRBuilder<> builder(ci->getNextNode());
+              Value* arr = builder.CreateLoad(Type::getFloatPtrTy(ctx), addr, "uvm_" + std::to_string(var_cnt));
+              Value* vptr = builder.CreateBitCast(arr, Type::getInt8PtrTy(ctx), "cast_" + std::to_string(var_cnt));
+              Value* device = builder.getInt32(0);
+              Value *nu = ConstantPointerNull::get(PointerType::get(StructType::getTypeByName(ctx, "struct.CUstream_st"), 0));
+              Value* args[] = {vptr, size, device, nu};
+              builder.CreateCall(ff, args);
+              var_cnt++;
+              // for (auto &arg : ci->args()) {
+              //   errs() << arg->getNameOrAsOperand() << " " << *arg->getType() << "\n";
+              //   for (auto user : arg->users()) {
+              //     Instruction* use_inst;
+              //     if ((use_inst = dyn_cast<Instruction>(user)) && use_inst->mayReadFromMemory()) {
+              //       errs() << "User: " << *user << "\n";
+              //     }
+              //   }
+              // }
+            }
             // if (call_name.find("__device_stub__") != std::string::npos) {
             //   errs() << "Call kernel: " << call_name << "\n";
             //   for (auto &arg : ci->args()) {
@@ -81,23 +93,7 @@ namespace {
             //     }
             //   }
             // }
-            if (call_name.find("cudaMemPrefetchAsync") != std::string::npos) {
-              errs() << "Call prefetch: " << call_name << "\n";
-              // for (auto &arg : ci->args()) {
-              //   errs() << arg->getNameOrAsOperand() << " " << *arg->getType() << " " <<  << "\n";
-
-              //   // for (auto user : arg->users()) {
-              //   //   Instruction* use_inst;
-              //   //   if ((use_inst = dyn_cast<Instruction>(user)) && use_inst->mayReadFromMemory()) {
-              //   //     errs() << "User: " << *user << "\n";
-              //   //   }
-              //   // }
-              // }
-              st = ci->getArgOperand(3)->getType();
-              errs() << *st << " name: " << st->getNonOpaquePointerElementType()->getStructName() <<  "\n";
-              
-            }
-            FunctionCallee ff = insertPrefetchFunc(ctx, Mod);
+            // FunctionCallee ff = insertPrefetchFunc(ctx, Mod);
           }
         }
       }
@@ -116,6 +112,8 @@ namespace {
             };
         FunctionType* prefetch = FunctionType::get(returnType, fArgs, false);
         errs() << "Insert prefetch\n";
+        // declare dso_local i32 @cudaMemPrefetchAsync(i8* noundef, i64 noundef, i32 noundef, %struct.CUstream_st* noundef) #1
+        // pass (addr, size, 0, null), where addr require bitcast to i8* first
         return module->getOrInsertFunction(StringRef("cudaMemPrefetchAsync"), prefetch);
       }
       return FunctionCallee();
