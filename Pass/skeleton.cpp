@@ -16,6 +16,7 @@
 #include <llvm/IR/IRBuilder.h>
 
 #include <vector>
+#include "llvm/ADT/DenseMap.h"
 
 using namespace llvm;
 using namespace std;
@@ -25,75 +26,45 @@ namespace {
   struct SkeletonPass : public FunctionPass {
     static char ID;
     unsigned var_cnt = 0;
+    DenseMap<Value *, Value*> uvm;
     SkeletonPass() : FunctionPass(ID) {}
 
     virtual bool runOnFunction(Function &F) {
       auto func_name = F.getName();
       errs() << "I saw a function called " << func_name << "!\n";
       Module* Mod = F.getParent();
-      // if (func_name.find("cudaMallocManaged") != std::string::npos) {
-      //   auto addr = F.getArg(0);
-      //   errs() << "Alloc unified memory " << addr->getValueName()->getValue() << "!\n";
-      //   Value* val = cast<Value>(addr);
-      //   Value::use_iterator sUse = val->use_begin();
-      //   Value::use_iterator sEnd = val->use_end();
-      //   for (; sUse != sEnd; ++sUse) {
-      //       if(StoreInst* si = dyn_cast<StoreInst>(&*sUse)) {
-      //         DebugLoc loc = si->getDebugLoc();
-      //         StringRef filename = loc->getFilename();
-      //         int lineNum = loc->getLine();
-      //         int columnNum = loc->getColumn();
-      //         errs() << "Find usage of addr in " << filename << ";" << lineNum << "\n";
-      //       }
-      //     }
-      // }
       auto &ctx = F.getContext();
-      // declare dso_local i32 @cudaMemPrefetchAsync(i8* noundef, i64 noundef, i32 noundef, %struct.CUstream_st* noundef) #1
-      // StructType *st = StructType::getTypeByName(ctx, "CUstream_st");
-      // if (st != nullptr) {
-      //   errs() << "find type" << *st << *st->getPointerTo() << "\n";
-      // }
-      FunctionCallee ff = insertPrefetchFunc(ctx, Mod);
+      
       for (auto &bb : F) {
         for (auto &i : bb) {
           if(CallInst* ci = dyn_cast<CallInst>(&i)) {
             auto call_name = ci->getCalledFunction()->getName();
+
             if (call_name.find("_ZL17cudaMallocManaged") != std::string::npos) {
               errs() << "Call malloc function: " << call_name << "\n";
               auto addr = ci->getArgOperand(0);
               auto size = ci->getArgOperand(1);
-              errs() << "Address name: " << addr->getNameOrAsOperand() << " size: " << size->getNameOrAsOperand() << "\n"; 
-              IRBuilder<> builder(ci->getNextNode());
-              Value* arr = builder.CreateLoad(Type::getFloatPtrTy(ctx), addr, "uvm_" + std::to_string(var_cnt));
-              Value* vptr = builder.CreateBitCast(arr, Type::getInt8PtrTy(ctx), "cast_" + std::to_string(var_cnt));
-              Value* device = builder.getInt32(0);
-              Value *nu = ConstantPointerNull::get(PointerType::get(StructType::getTypeByName(ctx, "struct.CUstream_st"), 0));
-              Value* args[] = {vptr, size, device, nu};
-              builder.CreateCall(ff, args);
-              var_cnt++;
-              // for (auto &arg : ci->args()) {
-              //   errs() << arg->getNameOrAsOperand() << " " << *arg->getType() << "\n";
-              //   for (auto user : arg->users()) {
-              //     Instruction* use_inst;
-              //     if ((use_inst = dyn_cast<Instruction>(user)) && use_inst->mayReadFromMemory()) {
-              //       errs() << "User: " << *user << "\n";
-              //     }
-              //   }
-              // }
+              errs() << "Address name: " << *addr << " size: " << *size << " addr space " << addr->getType()->getPointerAddressSpace() << "\n"; 
+              // IRBuilder<> builder(ci->getNextNode());
+              // insertPrefetchFuncByPP(builder, ctx, Mod, addr, size);
+              errs() << "Address name: " << addr << " size: " << size << "\n"; 
+              uvm[addr] = size;
             }
-            // if (call_name.find("__device_stub__") != std::string::npos) {
-            //   errs() << "Call kernel: " << call_name << "\n";
-            //   for (auto &arg : ci->args()) {
-            //     errs() << arg->getNameOrAsOperand() << " " << *arg->getType() << "\n";
-            //     for (auto user : arg->users()) {
-            //       Instruction* use_inst;
-            //       if ((use_inst = dyn_cast<Instruction>(user)) && use_inst->mayReadFromMemory()) {
-            //         errs() << "User: " << *user << "\n";
-            //       }
-            //     }
-            //   }
-            // }
-            // FunctionCallee ff = insertPrefetchFunc(ctx, Mod);
+            if (call_name.find("__device_stub__") != std::string::npos) {
+              errs() << "Call kernel: " << call_name << "\n";
+              for (auto &arg : ci->args()) {
+                errs() << arg->getNameOrAsOperand() << " " << *arg->getType() << "\n";
+                if (arg->getType()->isPointerTy()) {
+                  if (LoadInst *li = dyn_cast<LoadInst>(arg)) {
+                    auto addr = li->getOperand(0);
+                    errs() << "addr: " << addr->getNameOrAsOperand() << "\n";
+                    errs() << "addr: " << *addr << " size " << uvm[addr]->getNameOrAsOperand() << "\n";
+                    IRBuilder<> builder(ci);
+                    insertPrefetchFuncByPP(builder, ctx, Mod, addr, uvm[addr]);
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -101,7 +72,33 @@ namespace {
       return false;
     }
 
-    FunctionCallee insertPrefetchFunc(LLVMContext& ctx,
+    int insertPrefetchFuncByP(IRBuilder<> &builder, LLVMContext& ctx, Module* Mod, Value *arr, Value *size) {
+      // by p is using pointer to type, like float*
+      FunctionCallee prefetch = declarePrefetchFunc(ctx, Mod);
+      // Value* arr = builder.CreateLoad(Type::getFloatPtrTy(ctx), addr, "uvm_" + std::to_string(var_cnt));
+      Value* vptr = builder.CreateBitCast(arr, Type::getInt8PtrTy(ctx), "cast_" + std::to_string(var_cnt));
+      Value* device = builder.getInt32(0); // use device 0 by default
+      Value *null_pointer = ConstantPointerNull::get(PointerType::get(StructType::getTypeByName(ctx, "struct.CUstream_st"), 0));
+      Value* args[] = {vptr, size, device, null_pointer};
+      builder.CreateCall(prefetch, args);
+      var_cnt++;
+      return 0;
+    }
+
+    int insertPrefetchFuncByPP(IRBuilder<> &builder, LLVMContext& ctx, Module* Mod, Value *addr, Value *size) {
+      // by pp is using pointer to pointer to type, like float**
+      FunctionCallee prefetch = declarePrefetchFunc(ctx, Mod);
+      Value* arr = builder.CreateLoad(Type::getFloatPtrTy(ctx), addr, "uvm_" + std::to_string(var_cnt));
+      Value* vptr = builder.CreateBitCast(arr, Type::getInt8PtrTy(ctx), "cast_" + std::to_string(var_cnt));
+      Value* device = builder.getInt32(0); // use device 0 by default
+      Value *null_pointer = ConstantPointerNull::get(PointerType::get(StructType::getTypeByName(ctx, "struct.CUstream_st"), 0));
+      Value* args[] = {vptr, size, device, null_pointer};
+      builder.CreateCall(prefetch, args);
+      var_cnt++;
+      return 0;
+    }
+
+    FunctionCallee declarePrefetchFunc(LLVMContext& ctx,
                                       Module* module){
       if (StructType *st = StructType::getTypeByName(ctx, "struct.CUstream_st")) {
         Type* returnType = Type::getInt32Ty(ctx);
@@ -116,7 +113,7 @@ namespace {
         // pass (addr, size, 0, null), where addr require bitcast to i8* first
         return module->getOrInsertFunction(StringRef("cudaMemPrefetchAsync"), prefetch);
       }
-      return FunctionCallee();
+      return FunctionCallee(); // how to deal with this ?
     }
 
   };
