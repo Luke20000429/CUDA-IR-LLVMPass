@@ -106,7 +106,7 @@ namespace {
     int insertPrefetchFunc(IRBuilder<> &builder, LLVMContext& ctx, Module* Mod, Value *addr, Value *size) {
       // by pp is using pointer to pointer to type, like float**
       FunctionCallee prefetch = declarePrefetchFunc(ctx, Mod);
-      Value* arr = builder.CreateLoad(Type::getFloatPtrTy(ctx), addr, "uvm_" + std::to_string(var_cnt));
+      Value* arr = builder.CreateLoad(addr->getType()->getNonOpaquePointerElementType(), addr, "uvm_" + std::to_string(var_cnt));
       Value* vptr = builder.CreateBitCast(arr, Type::getInt8PtrTy(ctx), "cast_" + std::to_string(var_cnt));
       Value* device = builder.getInt32(0); // use device 0 by default
       Value *null_pointer = ConstantPointerNull::get(PointerType::get(StructType::getTypeByName(ctx, "struct.CUstream_st"), 0));

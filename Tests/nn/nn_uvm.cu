@@ -132,8 +132,8 @@ int main(int argc, char* argv[])
 	/**
 	* Allocate memory on host and device
 	*/
-    cudaMallocManaged((void **)&distances, sizeof(float) * numRecords);
-    cudaMallocManaged((void **)&h_locations, sizeof(LatLong) * numRecords);
+    cudaMallocManaged(&distances, sizeof(float) * numRecords);
+    cudaMallocManaged(&h_locations, sizeof(LatLong) * numRecords);
 	// distances = (float *)malloc(sizeof(float) * numRecords);
     // h_locations = (LatLong *)malloc(sizeof(LatLong) * numRecords);
     memcpy(h_locations, &locations[0], sizeof(LatLong) * numRecords);
