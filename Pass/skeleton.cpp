@@ -41,6 +41,7 @@ namespace {
             auto call_name = ci->getCalledFunction()->getName();
 
             if (call_name.find("_ZL17cudaMallocManaged") != std::string::npos) {
+              // NOTE: This name requires header file "cuda.h" included
               errs() << "Call malloc function: " << call_name << "\n";
               auto addr = ci->getArgOperand(0);
               auto size = ci->getArgOperand(1);
@@ -60,7 +61,7 @@ namespace {
                       IRBuilder<> builder(ci); // insert instructions ahead of it
                       insertPrefetchFunc(builder, ctx, Mod, addr, uvm[addr]);
                     } else {
-                      errs() << "addr: " << *addr << " not a unified memory" << "\n";
+                      errs() << "addr: " << *addr << " not a unified memory, try #include \"cuda.h\" at the beginning, or remove translation to (void **) when unified memory is malloced" << "\n";
                     }
                   }
                 }
@@ -70,7 +71,7 @@ namespace {
           if(InvokeInst* ci = dyn_cast<InvokeInst>(&i)) {
             auto call_name = ci->getCalledFunction()->getName();
 
-            if (call_name.find("_ZL17cudaMallocManaged") != std::string::npos) {
+            if (call_name.find("cudaMallocManaged") != std::string::npos) {
               errs() << "Call malloc function: " << call_name << "\n";
               auto addr = ci->getArgOperand(0);
               auto size = ci->getArgOperand(1);

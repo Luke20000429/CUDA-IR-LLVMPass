@@ -5,3 +5,10 @@ nvprof ./particle_filter_opt -x 128 -y 128 -z 4 -np 1000000
 
 nvprof ./particle_filter_opt -x 128 -y 128 -z 4 -np 400000
 nvprof ./particle_filter_uvm -x 128 -y 128 -z 4 -np 400000
+
+# To compile to exe
+clang++ -flegacy-pass-manager  -Xclang -load -Xclang ../../build/Pass/libSkeletonPass.* *_uvm.cu -o opt_prog --cuda-gpu-arch=sm_61 -L/usr/local/cuda-11.8/lib64/ -lcudart_static -ldl -lrt -pthread
+# To get optimized IR
+clang++ -flegacy-pass-manager -Xclang -load -Xclang ../../build/Pass/libSkeletonPass.* -std=c++11 -emit-llvm -c -S *_uvm.cu --cuda-gpu-arch=sm_61
+# To run with nvprof
+nvprof ./opt_prog -x 128 -y 128 -z 4 -np 400000

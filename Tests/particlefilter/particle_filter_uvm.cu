@@ -12,7 +12,8 @@
 #include <fcntl.h>
 #include <float.h>
 #include <sys/time.h>
-#include<ctime>
+#include <ctime>
+#include "cuda.h"
 #define PI 3.1415926535897932
 #define BLOCK_X 16
 #define BLOCK_Y 16
@@ -458,12 +459,12 @@ void particleFilter(int * I, int IszX, int IszY, int Nfr, int * seed, int Nparti
 	double * u;
 	
 	//CUDA memory allocation
-	check_error(cudaMallocManaged((void **) &arrayX, sizeof(double)*Nparticles));
-	check_error(cudaMallocManaged((void **) &arrayY, sizeof(double)*Nparticles));
-	check_error(cudaMallocManaged((void **) &xj, sizeof(double)*Nparticles));
-	check_error(cudaMallocManaged((void **) &yj, sizeof(double)*Nparticles));
-	check_error(cudaMallocManaged((void **) &CDF, sizeof(double)*Nparticles));
-	check_error(cudaMallocManaged((void **) &u, sizeof(double)*Nparticles));
+	check_error(cudaMallocManaged(&arrayX, sizeof(double)*Nparticles));
+	check_error(cudaMallocManaged(&arrayY, sizeof(double)*Nparticles));
+	check_error(cudaMallocManaged(&xj, sizeof(double)*Nparticles));
+	check_error(cudaMallocManaged(&yj, sizeof(double)*Nparticles));
+	check_error(cudaMallocManaged(&CDF, sizeof(double)*Nparticles));
+	check_error(cudaMallocManaged(&u, sizeof(double)*Nparticles));
 	
 	for(x = 0; x < Nparticles; x++){
 		arrayX[x] = xe;

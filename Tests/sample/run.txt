@@ -1,12 +1,6 @@
-./hurricane_gen 500000 10
-
-./nn filelist_10 -r 10240 -lat 30 -lng 90 -q
-
-nvprof ./nn_opt filelist_10 -r 10240 -lat 10 -lng 90 -q
-
 # To compile to exe
 clang++ -flegacy-pass-manager  -Xclang -load -Xclang ../../build/Pass/libSkeletonPass.* *_uvm.cu -o opt_prog --cuda-gpu-arch=sm_61 -L/usr/local/cuda-11.8/lib64/ -lcudart_static -ldl -lrt -pthread
 # To get optimized IR
 clang++ -flegacy-pass-manager -Xclang -load -Xclang ../../build/Pass/libSkeletonPass.* -std=c++11 -emit-llvm -c -S *_uvm.cu --cuda-gpu-arch=sm_61
 # To run with nvprof
-nvprof ./opt_prog filelist_10 -r 10240 -lat 10 -lng 90 -q
+nvprof ./opt_prog
