@@ -1,5 +1,3 @@
-./gaussian -f data/matrix1024.txt -q
-./gaussian -s 12 -q
 
 # -q means quiet
 
@@ -7,3 +5,10 @@
 nvprof ./gaussian -s 4000 -q
 nvprof ./gaussian_uvm -s 4000 -q
 nvprof ./gaussian_opt -s 4000 -q
+
+# To compile to exe
+clang++ -flegacy-pass-manager  -Xclang -load -Xclang ../../build/Pass/libSkeletonPass.* *_uvm.cu -o opt_prog --cuda-gpu-arch=sm_61 -L/usr/local/cuda-11.8/lib64/ -lcudart_static -ldl -lrt -pthread
+# To get optimized IR
+clang++ -flegacy-pass-manager -Xclang -load -Xclang ../../build/Pass/libSkeletonPass.* -std=c++11 -emit-llvm -c -S *_uvm.cu --cuda-gpu-arch=sm_61
+# To run with nvprof
+nvprof ./opt_prog -s 4000 -q

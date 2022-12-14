@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
     //PrintDeviceProperties();
     //char filename[100];
     //sprintf(filename,"matrices/matrix%d.txt",size);
-
+	Size = 4;
     for(i=1;i<argc;i++) {
       if (argv[i][0]=='-') {// flag
         flag = argv[i][1];
@@ -133,23 +133,6 @@ int main(int argc, char *argv[])
               i++;
               Size = atoi(argv[i]);
 	      printf("Create matrix internally in parse, size = %d \n", Size);
-
-	    //   a = (float *) malloc(Size * Size * sizeof(float));
-          cudaMallocManaged(&a, Size * Size * sizeof(float));
-	      create_matrix(a, Size);
-
-	    //   b = (float *) malloc(Size * sizeof(float));
-          cudaMallocManaged(&b, Size * sizeof(float));
-	      for (j =0; j< Size; j++)
-	    	b[j]=1.0;
-
-	    //   m = (float *) malloc(Size * Size * sizeof(float));
-          cudaMallocManaged(&m, Size * Size * sizeof(float));
-              break;
-            case 'f': // platform
-              i++;
-	      printf("Read file from %s \n", argv[i]);
-	      InitProblemOnce(argv[i]);
               break;
             case 'q': // quiet
 	      verbose = 0;
@@ -157,6 +140,14 @@ int main(int argc, char *argv[])
 	  }
       }
     }
+	cudaMallocManaged(&a, Size * Size * sizeof(float));
+	create_matrix(a, Size);
+
+	cudaMallocManaged(&b, Size * sizeof(float));
+	for (j =0; j< Size; j++)
+	b[j]=1.0;
+
+	cudaMallocManaged(&m, Size * Size * sizeof(float));
 
     //InitProblemOnce(filename);
     InitPerRun();
